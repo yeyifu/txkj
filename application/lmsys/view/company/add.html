@@ -1,0 +1,118 @@
+{extend name="public/base" /}
+{block name="main"}
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>用户编辑</h2>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <!--                     <h5>基本数据表示例与响应插件</h5>-->
+                    <h3><a href="javascript:history.go(-1)"><i class="fa fa-mail-reply" ></i>返回</a></h3>
+<!--                    <h3><a href="{:url('company/index')}"><i class="fa fa-mail-reply"></i> 返回</a></h3>-->
+
+                </div>
+                <div class="ibox-content">
+                    <div class="table-responsive">
+                        <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4"><div class="html5buttons"></div>
+                            <table class="table table-striped table-bordered table-hover dataTables-example dataTable" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info" role="grid">
+
+
+                            <div class="ibox-content">
+                                <form action="{:url('company/insert')}" method="post">
+
+                                    <div class="form-group  row"><label class="col-sm-2 col-form-label">*企业名称</label>
+                                        <div class="col-sm-10"><input type="text" required="required" class="form-control" name="com_name" value=""></div>
+                                    </div>
+                                    <div class="form-group  row"><label class="col-sm-2 col-form-label">*联系人</label>
+                                        <div class="col-sm-10"><input type="text" required="required" class="form-control" name="contact" value=""></div>
+                                    </div>
+                                    <div class="form-group  row"><label class="col-sm-2 col-form-label">*联系电话</label>
+                                        <div class="col-sm-10"><input type="text" required="required" class="form-control" name="number" value=""></div>
+                                    </div>
+                                    <div class="form-group  row"><label class="col-sm-2 col-form-label">*证件地址</label>
+                                        <div class="col-sm-10"><input type="text" required="required" class="form-control" name="cre_address" value=""></div>
+                                    </div>
+                                    <div class="form-group  row"><label class="col-sm-2 col-form-label">email</label>
+                                        <div class="col-sm-10"><input type="text" class="form-control" name="email" value=""></div>
+                                    </div>
+                                    <script language="JavaScript">
+                                        function checknull() {
+
+                                            var username = document.getElementsByName('username').value;
+                                            var contact = document.getElementsByName('contact').value;
+                                            var number = document.getElementsByName('number').value;
+                                            var cre_address = document.getElementsByName('cre_address').value;
+                                            if(username=='' || contact=='' || number=='' || cre_address==''){
+                                                alert('信息不完整');
+                                                return false;
+                                            }else{
+                                                return true;
+                                            }
+                                        }
+                                        
+                                        function showem() {
+                                            var a = document.getElementById('emcount');
+                                            a.style.display='none';
+                                            // alert(a.value);
+                                        }
+
+                                        function hiddenem() {
+                                            var a = document.getElementById('emcount');
+                                            a.style.display='';
+                                            // alert(a.value);
+                                        }
+
+
+                                    </script>
+                                    <div class="form-group  row"><label class="col-sm-2 col-form-label">是否授权</label>
+                                        <div class="col-sm-10">
+                                            <input type="radio" name="no_em" onclick="hiddenem()" id="emy" value="1" checked=selected /> 是 &nbsp&nbsp
+                                            <input type="radio" name="no_em" onclick="showem()" id="emn" value="0"  /> 否
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group  row" id="emcount"><label class="col-sm-2 col-form-label">授权数量</label>
+                                        <div class="col-sm-10"><input type="text" class="form-control" name="all_em" value=""></div>
+                                    </div>
+                                    <div class="form-group  row"><label class="col-sm-2 col-form-label">禁止登陆</label>
+                                        <div class="col-sm-10">
+                                            <input type="radio" name="no_login" id="loginy" value="1" /> 是 &nbsp&nbsp
+                                            <input type="radio" name="no_login" id="loginn" value="0" checked=selected /> 否
+                                        </div>
+                                    </div>
+                                    <div class="form-group  row"><label class="col-sm-2 col-form-label">是否使用</label>
+                                        <div class="col-sm-10">
+                                            <input type="radio" name="is_use" id="usery" value="1" checked=selected /> 是 &nbsp&nbsp
+                                            <input type="radio" name="is_use" id="usern" value="0" /> 否
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-4 col-sm-offset-2">
+<!--                                            <button onclick='check()' class="btn btn-primary btn-sm" type="submit">保存添加</button>-->
+                                            <input type="submit" value="保存">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            </tbody>
+                            <tfoot>
+
+                            </tfoot>
+                        </table>
+
+                            <!-- <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="DataTables_Table_0_previous"><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item "><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="2" tabindex="0" class="page-link">2</a></li><li class="paginate_button page-item "><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="3" tabindex="0" class="page-link">3</a></li><li class="paginate_button page-item next" id="DataTables_Table_0_next"><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="4" tabindex="0" class="page-link">Next</a></li></ul></div> -->
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}

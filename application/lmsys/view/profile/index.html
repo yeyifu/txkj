@@ -1,0 +1,184 @@
+{extend name="public/base" /}
+{block name="main"}
+
+<style type="text/css">
+    .popPosition {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+    }
+    #pop-container {
+        display: none;
+        z-index: 999;
+    }
+    /*遮盖层*/
+    #cover-tier {
+        background-color: #D9D9D9;
+        opacity: 0.5;
+    }
+    /*弹出层内容*/
+    #pop-tier {
+        border-radius: 10px;
+        width: 550px;
+        height: 200px;
+        /* border: 1px solid #2AACC3; */
+        background-color: #fff;
+        /*margin: auto;*/
+        text-align: center;
+        /*top: 100px;*/
+    }
+    /*关闭弹框*/
+    #close-pop {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+    }
+</style>
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>个人信息</h2>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <!-- <h5>基本数据表示例与响应插件</h5> -->
+<!--                    <h3><a href="/index/index"><i class="fa fa-reply"></i>返回</a></h3>-->
+                    <h3><a href="javascript:history.go(-1)"><i class="fa fa-reply"></i>返回</a></h3>
+                </div>
+
+                <!--                编辑表单-->
+                <div class="ibox-content">
+                    <input type="hidden" name="user_id" value="">
+                    <input type="hidden" name="com_id" value="">
+                    <div class="form-group  row"><label class="col-sm-2 col-form-label">用户名称</label>
+                        <div class="col-sm-10"><input type="text" readonly class="form-control" name="usernames" value="{$data.username}"></div>
+                    </div>
+                    <div class="form-group  row"><label class="col-sm-2 col-form-label">手机号码</label>
+                        <div class="col-sm-10"><input type="text" readonly class="form-control" name="phones" value="{$data.phone}"></div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-4 col-sm-offset-2">
+                            <a onclick='edit()'><button  class="btn btn-primary btn-sm" type="submit">编辑资料</button></a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="hiddenbox">
+    <!--    <button id="btn">点击弹出层</button>-->
+    <div id="pop-container">
+        <div id="cover-tier" class="popPosition"></div>
+        <div id="pop-tier" class="popPosition">
+            <!-- <i id="close-pop">&#10006;</i> -->
+            <i id="close-pop" class="fa fa-times-rectangle" aria-hidden="true" style="float: right; padding: 5px 5px 0 0;"></i>
+            <p style="padding: 5px 0 0 0;"><B>修改个人信息</B> </p>
+            <!-- <form action="{:url('user/addadmin')}" method="post"> -->
+            <ul style="list-style-type: none; padding:10px 0px 0 30px;">
+                <li style="float: left; padding:7px 10px 0 0;"><B>用户名称</B> </li>
+                <input type="text" required="required" class="form-control" style="width: 400px;" name="username" id="username" value="{$data.username}">
+            </ul>
+            <ul style="list-style-type: none; padding:0px 0px 0 30px;">
+                <li style="float: left; padding:7px 10px 0 0;"><B>手机号码</B> </li>
+                <input type="text" required="required" class="form-control" style="width: 400px;" name="phone" id="phone" value="{$data.phone}">
+            </ul>
+            <ul style="list-style-type: none;">
+                <input value="修改" type="submit" onclick='editinfo(this,"{$Think.session.user_id}")' style="width: 100px; border: 0 ; margin: 2px 0 2px 0; border-radius: 3px; height: 30px;">
+            </ul>
+            <!-- </form> -->
+        </div>
+    </div>
+</div>
+
+
+
+
+<script type="text/javascript">
+
+    window.onload=function(){
+        // alert(document.getElementsByTagName('tr').length);
+        // alert('123');
+        // document.getElementById('hiddenbox').remove();
+    }
+
+    function edit(){
+        // 获取窗口宽度
+        if (window.innerWidth)
+            winWidth = window.innerWidth;
+        else if ((document.body) && (document.body.clientWidth))
+            winWidth = document.body.clientWidth;
+        // 获取窗口高度
+        if (window.innerHeight)
+            winHeight = window.innerHeight;
+        else if ((document.body) && (document.body.clientHeight))
+            winHeight = document.body.clientHeight;
+        // 通过深入 Document 内部对 body 进行检测，获取窗口大小
+        if (document.documentElement && document.documentElement.clientHeight && document.documentElement.clientWidth)
+        {
+            winHeight = document.documentElement.clientHeight;
+            winWidth = document.documentElement.clientWidth;
+        }
+        var top = (winHeight-220)/4+'px';
+        var left = (winWidth-770)/2+'px';
+        document.getElementById('hiddenbox').style.display = 'block';
+        document.getElementById('pop-container').style.display = 'block';
+        $("#pop-tier").css({"top":top,"left":left});
+        // document.getElementById('username').value='';
+        // document.getElementById('phone').value='';
+
+
+    }
+
+    function temp(id) {
+        return document.getElementById(id);
+    }
+
+    temp('close-pop').onclick = function() {
+        temp('pop-container').style.display = 'none';
+    }
+
+    // 添加管理员
+    function editinfo(obj,user_id){
+        var username = document.getElementById("username").value;
+        var phone = document.getElementById("phone").value;
+        if(username != '' && phone != ''){
+            $.post("{:url('profile/editinfo')}",{user_id:user_id,username:username,phone:phone},function(data){
+                if(data.statu==200){
+                    // alert(data.info);
+                    document.getElementById('hiddenbox').style.display = 'none';
+                    // document.getElementsByName('usernames').value = username;
+                    // document.getElementsByName('phones').value = phone;
+                    $("input[name=usernames]").val(username);
+                    $("input[name=phones]").val(phone);
+
+                    // var tdlen = document.getElementsByTagName('tr').length;
+                    // var item = "<tr class='gradeA odd' role='row'><td class='sorting_1'>"+tdlen+"</td><td>"+username+"</td><td>"+phone+"</td><td><button type='button' onclick='deladmin(this,"+data.user_id+")' class='btn btn-default btn-xs'>删除</button></td></tr>";
+                    // $('#adminlist').append(item);
+
+
+                }else{
+                    alert(data.info);
+
+                }
+            });
+        }else{
+            alert('用户名称和手机号码不能为空!');
+        }
+
+
+    }
+</script>
+{/block}

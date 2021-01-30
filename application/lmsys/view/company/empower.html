@@ -1,0 +1,540 @@
+{extend name="public/base" /}
+{block name="main"}
+<style type="text/css">
+    .popPosition {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+    }
+    #pop-container {
+        display: none;
+        z-index: 999;
+    }
+    /*遮盖层*/
+    #cover-tier {
+        background-color: #D9D9D9;
+        opacity: 0.5;
+    }
+    /*弹出层内容*/
+    #pop-tier {
+        border-radius: 10px;
+        width: 550px;
+        height: 200px;
+        /* border: 1px solid #2AACC3; */
+        background-color: #fff;
+        /*margin: auto;*/
+        text-align: center;
+        /*transform:translateX(-50%) translateY(-50%);*/
+        /*margin: 100px 541px 0 541px;*/
+        /*margin-top: 100px;*/
+        margin: auto;
+        /*margin-bottom: 200px;*/
+        /*margin-left: 541px;*/
+        position:fixed;
+        /*top: 100px;*/
+    }
+    /*关闭弹框*/
+    #close-pop {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+    }
+
+
+</style>
+
+
+
+
+
+<!--<div class="row wrapper border-bottom white-bg page-heading">-->
+<!--    <div class="col-lg-10">-->
+<!--        <h2>授权列表</h2>-->
+<!--    </div>-->
+<!--    <div class="col-lg-2">-->
+<!--    </div>-->
+<!--</div>-->
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <!-- <h5>基本数据表示例与响应插件</h5> -->
+                    <!--                    <h3 id="pointerinfo"><a href="#" onclick="edit(this)"><i class="fa fa-plus-square"></i> 添加</a></h3>-->
+                    <h3 id="pointerinfo1">导入号码</h3>
+                    <input type="text" class="form-control" style="width: 400px;float: left;" onclick="edit(this)"><button type="button" class="btn btn-primary"><a href="#" onclick="edit(this)" style="color: white">上传</a></button>
+
+                </div>
+
+
+
+
+
+                <div class="ibox-title">
+                    <!-- <h5>基本数据表示例与响应插件</h5> -->
+                    <!--                    <h3 id="pointerinfo"><a href="#" onclick="edit(this)"><i class="fa fa-plus-square"></i> 添加</a></h3>-->
+                    <h3 id="pointerinfo2">检测结果</h3>
+                    <div class="row">
+                        <div class="col-lg-2" >
+                            <div class="ibox" style="width:200px;">
+                                <div class="ibox-content">
+                                    <h5>实号包</h5><a >  <i class="fa fa-question-circle"></i></a><button type="button" class="btn btn-default btn-xs" style="float: right">下载</button>
+                                    <h1></h1>
+                                    <h1 class="no-margins">886</h1>
+<!--                                    <div class="stat-percent font-bold text-navy">98% <i class="fa fa-bolt"></i></div>-->
+                                    <small></small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2" >
+                            <div class="ibox" style="width:200px;">
+                                <div class="ibox-content">
+                                    <h5>沉默包</h5><a >  <i class="fa fa-question-circle"></i></a><button type="button" class="btn btn-default btn-xs" style="float: right">下载</button>
+                                    <h1></h1>
+                                    <h1 class="no-margins">886</h1>
+                                    <!--                                    <div class="stat-percent font-bold text-navy">98% <i class="fa fa-bolt"></i></div>-->
+                                    <small></small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2" >
+                            <div class="ibox" style="width:200px;">
+                                <div class="ibox-content">
+                                    <h5>空号包</h5><button type="button" class="btn btn-default btn-xs" style="float: right">下载</button>
+                                    <h1></h1>
+                                    <h1 class="no-margins">886,200</h1>
+                                    <!--                                    <div class="stat-percent font-bold text-navy">98% <i class="fa fa-bolt"></i></div>-->
+                                    <small></small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2" >
+                            <div class="ibox" style="width:200px;">
+                                <div class="ibox-content">
+                                    <h5>风险包</h5><a >  <i class="fa fa-question-circle"></i></a><button type="button" class="btn btn-default btn-xs" style="float: right">下载</button>
+                                    <h1></h1>
+                                    <h1 class="no-margins">886</h1>
+                                    <!--                                    <div class="stat-percent font-bold text-navy">98% <i class="fa fa-bolt"></i></div>-->
+                                    <small></small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2" >
+                            <div class="ibox" style="width:200px;">
+                                <div class="ibox-content">
+                                    <h5>停机包</h5><a >  <i class="fa fa-question-circle"></i></a><button type="button" class="btn btn-default btn-xs" style="float: right">下载</button>
+                                    <h1></h1>
+                                    <h1 class="no-margins">886</h1>
+                                    <!--                                    <div class="stat-percent font-bold text-navy">98% <i class="fa fa-bolt"></i></div>-->
+                                    <small></small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2" >
+                            <div class="ibox" style="width:200px;">
+                                <div class="ibox-content">
+                                    <h5>库无包</h5><a >  <i class="fa fa-question-circle"></i></a><button type="button" class="btn btn-default btn-xs" style="float: right">下载</button>
+                                    <h1></h1>
+                                    <h1 class="no-margins">886</h1>
+                                    <!--                                    <div class="stat-percent font-bold text-navy">98% <i class="fa fa-bolt"></i></div>-->
+                                    <small></small>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+
+
+                <div class="ibox-title">
+                    <!-- <h5>基本数据表示例与响应插件</h5> -->
+<!--                    <h3 id="pointerinfo"><a href="#" onclick="edit(this)"><i class="fa fa-plus-square"></i> 添加</a></h3>-->
+                    <h3 id="pointerinfo">历史记录</h3>
+                </div>
+                <div class="ibox-content">
+                    <div class="table-responsive">
+
+                        <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4"><div class="html5buttons">
+                            <div class="dt-buttons btn-group">
+                                <!--<input type="search" value="" name="keyword" onchange="keyword(this);" placeholder="关键词搜索[授权码、授权用户]" onchange="keyword(this);" class="form-control form-control-sm" placeholder="" aria-controls="DataTables_Table_0">-->
+                                <input type="search" value="" name="keyword"  placeholder="[授权账号、授权用户]" onchange="keyword(this);" class="form-control form-control-sm" placeholder="" aria-controls="DataTables_Table_0" style="width:320px;">
+                                <a href="#" ><i class="fa fa-search"></i></a>
+                            </div>
+                        </div>
+                            <div class="dataTables_length" id="DataTables_Table_0_length">
+                                <label>
+                                    <form action="{:url('company/empower')}" method="get" id="myform">
+                                        <select name="pagelen" aria-controls="DataTables_Table_0" class="form-control form-control-sm" onchange="submitForm();">
+                                            <option value="15"  {switch name=$Request.get.pagelen }{case value="15"} selected {/case}{/switch}  />15</option>
+                                            <option value="25" {switch name=$Request.get.pagelen }{case value="25"} selected {/case}{/switch} >25</option>
+                                            <option value="50" {switch name=$Request.get.pagelen }{case value="50"} selected {/case}{/switch} >50</option>
+                                            <option value="100" {switch name=$Request.get.pagelen }{case value="100"} selected {/case}{/switch}>100</option>
+                                        </select>
+                                    </form>
+                                </label>
+                            </div>
+                            <table class="table table-striped table-bordered table-hover dataTables-example dataTable" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info" role="grid">
+                                <thead style="text-align: center">
+                                <tr role="row">
+                                    <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="序号: activate to sort column descending" style="width: 50px;">序号</th>
+                                    <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="名称: activate to sort column ascending" style="width: 150px;">名称</th>
+                                    <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="日期: activate to sort column ascending" style="width: 180px;">日期</th>
+                                    <th style="display: none;" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="状态: activate to sort column ascending" style="width: 200px;">状态</th>
+                                    <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="实号包: activate to sort column ascending" style="width: 150px;">实号包</th>
+                                    <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="沉默包: activate to sort column ascending" style="width: 150px;">沉默包</th>
+                                    <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="空号包: activate to sort column ascending" style="width: 170px;">空号包</th>
+                                    <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="风险包: activate to sort column ascending" style="width: 170px;">风险包</th>
+                                    <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="风险包: activate to sort column ascending" style="width: 170px;">停机包</th>
+                                    <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="风险包: activate to sort column ascending" style="width: 170px;">库无包</th>
+                                    <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="风险包: activate to sort column ascending" style="width: 170px;">上传条数</th>
+                                    <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="风险包: activate to sort column ascending" style="width: 170px;">计费条数</th>
+                                    <!-- <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="备注: activate to sort column ascending" style="width: 250px;">备注</th> -->
+                                    <!-- <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="操作: activate to sort column ascending" style="width: 200px;"><center>操作</center></th> -->
+                                    <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 250px;">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody id="oldem">
+                                {volist name='data' id='value'}
+                                <!--<form action="{:url('empowers/giveem')}" method="post">-->
+                                    <tr class="gradeA odd" role="row">
+                                        <td class="center" name="emtd"><center>{$i}</center></td>
+
+                                        <td name="comtd">{$value.imei}</td>
+                                        <td name="comtd" id="licence{$value.id}">{$value.time}</td>
+                                        <td style="display: none;" id="emstatus{$i}" name="emstatus"></td>
+
+                                        <td id="time{$value.id}"></td>
+                                        <td id="emtd{$value.id}">
+
+                                        </td>
+                                        <td id="em_name{$value.id}"></td>
+                                        <td id="version{$value.id}"></td>
+                                        <td id="version1{$value.id}"></td>
+                                        <td id="version2{$value.id}"></td>
+                                        <td id="version3{$value.id}"></td>
+                                        <td id="version4{$value.id}"></td>
+                                        <!-- <td class="center">{$value.remarks}</td> -->
+                                        <td class="center" style="width: 200px;">
+                                            <center>
+                                                <button type="button" class="btn btn-outline btn-primary">下载</button>
+<!--                                                <button type="button" class="btn btn-warning" name="em" id="em{$i}" onclick="giveem(this,'{$value.id}','{$value.imei}','{$i}')" style="background-color: #1ab394; border-color: #1ab394">{$value.em_status}</button>-->
+<!--                                                <button class="btn btn-warning " type="button" id="is_use{$i}" value="{$value.enable}" name="is_use" onclick='enables(this,"{$value.id}","{$value.imei}")' onload='color(this)' style="width: 65px;">{$value.enable}</button>-->
+                                            </center>
+                                        </td>
+                                    </tr>
+                                <!--</form>-->
+                                {/volist}
+
+                                </tbody>
+                                <tfoot>
+                                </tfoot>
+                            </table>
+                            <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
+                                <ul class="pagination">
+                                    {$data->render()}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!--上传文件弹窗-->
+<div id="hiddenbox" >
+    <!--    <button id="btn">点击弹出层</button>-->
+    <div id="pop-container">
+        <div id="cover-tier" class="popPosition"></div>
+        <div id="pop-tier" class="popPosition">
+            <!-- <i id="close-pop">&#10006;</i> -->
+            <i id="close-pop" class="fa fa-times-rectangle" aria-hidden="true" style="float: right; padding: 5px 5px 0 0;"></i>
+            <!--            <p style="padding: 5px 0 0 0;"><B>添加授权设备</B> </p>-->
+            <h3 style="padding: 5px 0 30px 0;"><B>上传检测号码</B></h3>
+            <form id="uploadForm" enctype="multipart/form-data" method="post">
+                <input type="hidden" id="com_id" name="com_id" value="{$Think.session.com_id}">
+                <input type="file" name="file" id="file">
+                <!--                <input type="button" id="upload" onclick='uploadfile(this)' value="上传">-->
+                <button class="btn btn-success " id="upload" type="button" onclick='uploadfile(this)'><i class="fa fa-upload"></i>&nbsp;&nbsp;<span class="bold">上传</span></button>
+                <!--                <button id="upload" type="button" onclick='uploadfile(this)' class="ladda-button btn btn-info" data-style="slide-right"><span class="ladda-label">提交</span><span class="ladda-spinner"></span><div class="ladda-progress" style="width: 0px;"></div></button>-->
+            </form>
+            <button class="btn btn-info btn-circle btn-lg" id="upsuccess" type="button" style="display: none;margin-left: 250px;"><i class="fa fa-check"></i></button>
+            <button class="btn btn-warning btn-circle btn-lg" id="uperror" type="button" style="display: none;margin-left: 250px;"><i class="fa fa-times"></i></button>
+            <div class="sk-circle12 sk-circle"></div>
+
+            <div id="loading" class="spiner-example" style="display: none;padding-top:20px;" >
+                上传中...
+                <div class="sk-spinner sk-spinner-fading-circle">
+                    <div class="sk-circle1 sk-circle"></div>
+                    <div class="sk-circle2 sk-circle"></div>
+                    <div class="sk-circle3 sk-circle"></div>
+                    <div class="sk-circle4 sk-circle"></div>
+                    <div class="sk-circle5 sk-circle"></div>
+                    <div class="sk-circle6 sk-circle"></div>
+                    <div class="sk-circle7 sk-circle"></div>
+                    <div class="sk-circle8 sk-circle"></div>
+                    <div class="sk-circle9 sk-circle"></div>
+                    <div class="sk-circle10 sk-circle"></div>
+                    <div class="sk-circle11 sk-circle"></div>
+                    <div class="sk-circle12 sk-circle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!---->
+
+
+
+
+
+
+
+
+<script>
+
+
+    //表单提交选择分页记录条数
+    function submitForm(){
+        var form = document.getElementById("myform");
+        form.submit();
+    }
+
+    //关键词搜索-授权列表
+    function keyword(obj) {
+        var keyword = $(obj).val();
+        var com_id = $("#com_id").val();
+        // alert(com_id);
+        // alert(keywords);
+        if(keyword==''){
+            window.location = '';
+            return false;
+        }else{
+            $.ajax({
+                type: 'post',
+                data: {"keyword":keyword,"com_id":com_id},
+                url: "{:url('empowers/emKeyword')}",
+                dataType: "json",
+                success: function (data) {
+                    if(data=='null'){
+                        $('#oldkey').remove();
+                        $('#oldem').remove();
+                        var item="<tbody id='oldkey'>";
+                        item += "<td colspan='8'><center>搜索结果为空！</center></td></tbody>";
+                        $('#DataTables_Table_0').append(item);
+                    }else{
+                        var item="<tbody id='oldkey'>";
+                        $('#oldem').remove();
+                        $.each(data,function (i,result) {
+                            $('#oldkey').remove();
+                            var com_id = result['com_id'];
+                            item += "<tr class='gradeA old' role='role'>" +
+                                "<td class='sorting_1' name='comtd' id='tdid"+i+"'>"+(i+1)+"</td>" +
+                                "<td class='center'>"+result['imei']+"</td>" +
+                                "<td class='center'>"+result['licence']+"</td>" +
+                                "<td class='center'>"+result['time']+"</td>" +
+                                "<td class='center'>"+result['em_type']+"</td>" +
+                                "<td class='center'>"+result['em_name']+"</td>" +
+                                "<td class='center'>"+result['version']+"</td>" +
+
+                                // "<td class='center'><button type='button' class='btn btn-warning' name='em' id=em"+{$i}+" onload='hiddenem(this,'"+"{$value.em_status}"+")' style='pointer-events:none;color:grey;background-color: #1ab394; border-color: #1ab394'>"+"{$value.em_status}"+"</button> <button class='btn btn-warning' type='button' id=isuse"+{$i}+" value="+"{$value.enable}"+" name='usestatus' onclick='enables(this,"+"{$value.id}"+","+result['imei']+")' style='width: 65px;'>"+"{$value.enable}"+"</button></td></tr>"
+                                // "<td class='center'><button type='button' class='btn btn-warning' name='em' id=em"+i+" onload='hiddenem(this,"+"{$value.em_status}"+")' style='pointer-events:none;color:grey;background-color: #1ab394; border-color: #1ab394'>"+"{$value.em_status}"+"</button> <button class='btn btn-warning' type='button' id=isuse"+i+" value="+"{$value.enable}"+" name='usestatus' onclick='enables(this,"+"{$value.id}"+","+result['imei']+")' style='width: 65px;'>"+result['enable']+"</button></td></tr>"
+                                "<td class='center'><center><button type='button' class='btn btn-warning' name='em' id=em"+i+" onload='hiddenem(this,"+"{$value.em_status}"+")' style='pointer-events:none;color:grey;background-color: #1ab394; border-color: #1ab394'>"+"{$value.em_status}"+"</button> <button class='btn btn-warning' type='button' id=isuse"+i+" value="+"{$value.enable}"+" name='usestatus' onclick='enables(this,"+"{$value.id}"+","+result['imei']+")' style='width: 65px;'>"+result['enable']+"</button></center></td></tr>"
+                        });
+                        item = item+"</tbody>"
+                        $('#DataTables_Table_0').append(item);
+                        $('.pagination').remove();
+                        var tdlen = $("#oldkey").find('tr').length;
+                        // alert(tdlen);
+                        for(var i=0;i<tdlen;i++){
+                            var useinfo = $("#"+'isuse'+i).text();
+                            // alert(useinfo);
+                            if(useinfo == '禁用'){
+                                $("#"+'isuse'+i).css('color','red');
+                            }else{
+                                $("#"+'isuse'+i).css('color','green');
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+    }
+
+    //
+    window.onload = function(obj){
+        var tdlen = $("td[name=comtd]").length;
+        for(var i=1;i<=tdlen;i++){
+            // $("#loginy").prop("checked",true);
+            // alert($("#em_type").val());
+            if($("#"+'em_type'+i).val() == '测试'){
+                $("#"+'em_typen'+i).prop("checked",true);
+            }else{
+                $("#"+'em_typey'+i).prop("checked",true);
+            }
+            if($("#is_use"+i).val() == '禁用'){
+                $("#is_use"+i).css('color','red');
+            }else{
+                $("#is_use"+i).css('color','green');
+            }
+
+            if($("#"+"em"+i).text() == '已授权'){
+                $("#"+"em"+i).css({"pointer-events":"none","color":"grey"});
+                // $("#"+"em"+i).css({"cursor":"not-allowed","color":"grey"});
+            }else{
+                $("#"+"is_use"+i).css({"pointer-events":"none","color":"grey"});
+                // $("#"+"is_use"+i).css({"cursor":"not-allowed","color":"grey"});
+            }
+        }
+    };
+
+
+    //授权，禁用|启用 显示效果
+    function enables(obj,id,imei){
+                var info = $(obj).val();
+                var statu = confirm(info+"该授权？");
+                if(!statu){
+                    return false;
+                }
+                var enable = $(obj).val();
+                // alert(enable);
+                $.post("{:url('empowers/updateEnable')}",{id:id,enable:enable,imei:imei},function(data){
+                    // alert('666');
+                    // alert(data.statu);
+                    if(data.statu==200){
+                        if($(obj).val()=='禁用'){
+                            $(obj).val('启用');
+                            $(obj).text('启用');
+                            $(obj).css('color','green');
+                        }else if($(obj).val()=='启用'){
+                            $(obj).val('禁用');
+                            $(obj).text('禁用');
+                            $(obj).css('color','red');
+                        }else{
+                            alert('修改错误');
+                        }
+                    }else{
+                        alert(data.info);
+                    }
+                });
+
+    }
+    
+    //授权
+    function giveem(obj,id,imei,i) {
+        var statu = confirm("是否授权？");
+        if(!statu){
+            return false;
+        }
+        var em_type = $("input[name=em_type"+id+"]:checked").val();
+        $.post("{:url('empowers/giveEm')}",{id:id,imei:imei,em_type:em_type},function(data){
+            if(data.status == 200){
+                $("#"+'em'+i).text("已授权");
+                $("#"+"em"+i).css({"pointer-events":"none","color":"grey"});
+                //修改授权后的数据
+                $("#"+'licence'+id).text(data.licence);
+                // $("#"+'em_type'+id).text(data.em_type);
+                $("#"+'time'+id).text(data.time);
+                $("#"+'em_name'+id).text(data.em_name);
+                $("#"+'version'+id).text(data.version);
+                if($("#is_use"+i).val() == '禁用'){
+                    $("#is_use"+i).css({"pointer-events":"auto"});
+                    $("#is_use"+i).css('color','red');
+                }else{
+                    $("#is_use"+i).css({"pointer-events":"auto"});
+                    $("#is_use"+i).css('color','green');
+                }
+            }else{
+                alert(data.info);
+            }
+        });
+    }
+
+
+
+
+    //授权列表文件excel上传
+    function uploadfile(obj,com_id) {
+        //判断上传文件是否为空
+        var filevalue = document.getElementById('file').value;
+        if( filevalue == ''){
+            //显示错误图标
+            document.getElementById('uperror').style.display = 'block';
+            return false;
+        }else{
+            //
+            document.getElementById('uperror').style.display = 'none';
+            document.getElementById('loading').style.display = 'block';
+            var formData = new FormData($("#uploadForm")[0]);
+            formData.append('com_id',$("#com_id").val());
+            $.ajax({
+                type: 'post',
+                url: "{:url('empowers/uploadFile')}",
+                data: formData,
+                dataType: "json",
+                cache: false,
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    if(data.status == 200){
+                        alert(data.info);
+                        //上传操作后清空input file
+                        document.getElementById('file').value = '';
+                        // alert(data.info);
+                        document.getElementById('loading').style.display = 'none';
+                        document.getElementById('uperror').style.display = 'none';
+                        document.getElementById('upsuccess').style.display = 'block';
+                        setTimeout(function(){
+                            document.getElementById('pop-container').style.display = 'none';
+                            document.getElementById('upsuccess').style.display = 'none';
+                        },1000);
+                    }else{
+                        document.getElementById('loading').style.display = 'none';
+                        document.getElementById('uperror').style.display = 'block';
+                        // alert(data.info);
+                    }
+                }
+            });
+        }
+    }
+
+
+
+
+    //授权列表-文件上传
+    function edit(){
+        // alert('232');
+
+        document.getElementById('hiddenbox').style.display = 'block';
+        document.getElementById('pop-container').style.display = 'block';
+        document.getElementById('uperror').style.display = 'none';
+        document.getElementById('upsuccess').style.display = 'none';
+        // document.getElementById('username').value='';
+        // document.getElementById('phone').value='';
+
+
+    }
+
+    function temp(id) {
+        return document.getElementById(id);
+    }
+
+    temp('close-pop').onclick = function() {
+        temp('pop-container').style.display = 'none';
+    }
+
+
+
+</script>
+{/block}

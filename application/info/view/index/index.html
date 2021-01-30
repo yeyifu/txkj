@@ -1,0 +1,383 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=0Eym5y3bcOq5iYuFnDIb6TfKqExL2Uvd"></script>
+    <title>map</title>
+</head>
+<style>
+    body{
+        margin:0 1px 0 1px;
+        color:white;
+    }
+    .box{
+        width:100%;
+        /*height:100%;*/
+        margin:0 auto;
+        overflow:hidden;
+        /*display: flex;*/
+        /*background-color: red;*/
+    }
+    .box .left{
+        /*width:22%;*/
+        /*width:300px;*/
+        height:915px;
+        background-color:#343a40;
+        float:left;
+    }
+    .box .header{
+        /*width:78%;*/
+        height:120px;
+        background-color:#f3f3f4;
+        /*float:right;*/
+        margin:0 0 4px 0;
+    }
+    .box .right{
+        border:1px;
+        /*width:100%;*/
+        height:791px;
+        /*background-color:#f00;*/
+        /*float:left;*/
+        margin:0 0 0 4px;
+
+    }
+    .input{
+        width: 200px;
+        height:25px;
+        margin:20px 2px 10px 5px;
+    }
+</style>
+<!--<style type="text/css">-->
+<!--body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";}-->
+<!--</style>-->
+<body>
+<div class="box">
+    <!--左栏-->
+    <div class="left">
+        <ul style="list-style-type: none;text-align:center">
+            <li>
+                <B>手机信息显示</B>
+            </li>
+        </ul>
+
+        <input type="text" id="imei" class="input"><button type="button" style="height:25px; border-radius: 4px;">选择</button>
+        <ul style="list-style-type: none;color:white;margin:5px 0 10px 0;line-height: 25px">
+            <li id="time"></li>
+            <li>GMS信号强度：80%</li>
+            <li>WIFI信号强度：80%</li>
+            <li>EMEI1：666666666666666</li>
+            <li>EMEI2：333333333333333</li>
+            <li>系统版本：Andrio10.0.1</li>
+            <li>硬件型号：djf555dsf1dsd5f4</li>
+            <li>ROM版本：s4f5d4fdf21dsf21</li>
+            <li>授权信息：dsf1df4d654fdf</li>
+        </ul>
+    </div>
+
+
+    <!--头部-->
+    <div class="header" >
+        <table border="0px;" style="margin: 10px 0 0 10px;">
+            <tr>
+                <td colspan="6">设置编辑</td>
+
+
+            </tr>
+            <tr>
+                <td><button type="button" style="height:25px; border-radius: 4px;">数据上传间隔</button></td>
+                <td><input type="text" name="" id="" placeholder="60s"></td>
+                <td><button type="button" style="height:25px; border-radius: 4px;">数据上传间隔</button></td>
+                <td colspan="3"><input type="text" name="" id="" placeholder="htts://romsir.com/info"></td>
+
+            </tr>
+
+            <tr>
+                <td><button type="button" style="height:25px; border-radius: 4px;">重启设备</button></td>
+                <td><button type="button" style="height:25px; border-radius: 4px;">恢复出厂</button></td>
+                <td><button type="button" style="height:25px; border-radius: 4px;">开启诊断模式</button></td>
+                <td><button type="button" style="height:25px; border-radius: 4px;">下载诊断日志</button></td>
+                <td colspan="2"><button type="button" style="height:25px; border-radius: 4px;">开启微信文件备份</button></td>
+
+            </tr>
+        </table>
+    </div>
+
+    <!--地图-->
+    <div class="right" id="allmap"></div>
+</div>
+</body>
+</html>
+
+<script src="/static/bts/js/jquery-3.1.1.min.js"></script>
+<script>
+    function getCurDate(){
+        var d = new Date();
+        var years = d.getFullYear();
+        var month = add_zero(d.getMonth()+1);
+        var days = add_zero(d.getDate());
+        var hours = add_zero(d.getHours());
+        var minutes = add_zero(d.getMinutes());
+        var seconds=add_zero(d.getSeconds());
+        var ndate = "时间："+years+"年"+month+"月"+days+"日 "+hours+":"+minutes+":"+seconds;
+        // alert(ndate);
+        // document.getElementById("time").text(ndate);
+        $("#time").text(ndate);
+    }
+
+    function add_zero(temp)
+    {
+        if(temp<10) return "0"+temp;
+        else return temp;
+    }
+
+    setInterval("getCurDate()",100);
+</script>
+
+
+<!--地图-->
+<script type="text/javascript">
+    var map; //Map实例
+    //后台传过来
+    var currentLat = 113.980281;
+    var currentLon = 22.543049;
+    var my = { title: "世界之窗" };
+
+
+    function map_init() {
+    map = new BMap.Map("allmap");
+    //第1步：设置地图中心点，当前城市
+    var point = new BMap.Point(currentLat, currentLon);
+    //第2步：初始化地图,设置中心点坐标和地图级别。
+    map.centerAndZoom(point, 13);
+    //第3步：启用滚轮放大缩小
+    map.enableScrollWheelZoom(true);
+    //第4步：向地图中添加缩放控件
+    var ctrlNav = new window.BMap.NavigationControl({
+    anchor: BMAP_ANCHOR_TOP_LEFT,
+    type: BMAP_NAVIGATION_CONTROL_LARGE
+    });
+    map.addControl(ctrlNav);
+    //第5步：向地图中添加缩略图控件
+    var ctrlOve = new window.BMap.OverviewMapControl({
+    anchor: BMAP_ANCHOR_BOTTOM_RIGHT,
+    isOpen: 1
+    });
+    map.addControl(ctrlOve);
+
+    //第6步：向地图中添加比例尺控件
+    var ctrlSca = new window.BMap.ScaleControl({
+    anchor: BMAP_ANCHOR_BOTTOM_LEFT
+    });
+    map.addControl(ctrlSca);
+
+
+    //第7步：绘制点
+    for (var i = 0; i < markerArr.length; i++) {
+        var p0 = markerArr[i].point.split(",")[0];
+        var p1 = markerArr[i].point.split(",")[1];
+        var maker = addMarker(new window.BMap.Point(p0, p1), i);
+        addInfoWindow(maker, markerArr[i], markerArr[i].name, markerArr[i].content);
+    }
+    //绘制点
+    var points = new Array();
+    for (var i = 0; i < markerArr.length; i++) {
+        var p0 = markerArr[i].point.split(",")[0];
+        var p1 = markerArr[i].point.split(",")[1];
+        var thePoint1 = new BMap.Point(p0, p1);
+        points.push(thePoint1);
+    }
+    drawPolyline(map, points);
+
+    // 添加信息窗口
+    function addInfoWindow(marker, poi,name, content) {
+    // marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+    var label = new window.BMap.Label(poi.title, { offset: new window.BMap.Size(2, 1) });
+    marker.setLabel(label);
+    var clo = "";
+    if ("我的位置" == poi.title) {
+        clo = "#FF5782";
+    } else {
+        clo = "#E6FED";
+    }
+    label.setStyle({
+        color: "#fff",
+        fontSize: "16px",
+        backgroundColor: "0.05",
+        border: "0",
+        fontWeight: "bold"
+        });
+    //maps.addOverlay(lab1);
+
+        addClickHandler(name,content, marker);
+    }
+    }
+    function addClickHandler(name,content, marker) {
+    marker.addEventListener("click", function (e) {
+    openInfo(name,content, e)
+    }
+    );
+    }
+    function openInfo(name,content, e) {
+    var opts = {
+    width: 150,     // 信息窗口宽度
+    height: 50,     // 信息窗口高度
+    title: name, // 信息窗口标题
+    enableMessage: true//设置允许信息窗发送短息
+    };
+    var p = e.target;
+    var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+    var infoWindow = new BMap.InfoWindow(content, opts);  // 创建信息窗口对象
+    map.openInfoWindow(infoWindow, point); //开启信息窗口
+    }
+    // 添加标注
+    function addMarker(point, index) {
+    index = 11;
+    var myIcon = new BMap.Icon("http://api.map.baidu.com/img/markers.png",
+    new BMap.Size(23, 25), {
+    offset: new BMap.Size(10, 25),
+    imageOffset: new BMap.Size(0, 0 - index * 25)
+
+    });
+    var marker = new BMap.Marker(point, { icon: myIcon });
+    map.addOverlay(marker);
+    return marker;
+    }
+    //异步调用百度js
+    function map_load() {
+    map_init();
+    }
+
+    /**
+    * 画线
+    */
+    function drawPolyline(bMap, points) {
+    if (points == null || points.length <= 1) {
+    return;
+    }
+    bMap.addOverlay(new BMap.Polyline(points, {
+    strokeColor: "#FF050F",
+    strokeWeight: 3,
+    strokeOpacity: 0.6
+    })); // 画线
+
+    }
+
+    // window.onload = getmapinfo;
+    window.onload = map_load;
+</script>
+
+
+
+
+<!--<script type="text/javascript">-->
+
+    <!--//百度地图API功能-->
+    <!--function loadJScript() {-->
+        <!--var script = document.createElement("script");-->
+        <!--script.type = "text/javascript";-->
+        <!--script.src = "http://api.map.baidu.com/api?v=2.0&ak=0Eym5y3bcOq5iYuFnDIb6TfKqExL2Uvd&callback=init";-->
+        <!--document.body.appendChild(script);-->
+        <!--// console.log("我是loadJScript");-->
+    <!--}-->
+
+    <!--//HTTP请求-->
+    <!--function get(url,params,callback){-->
+        <!--var request=new XMLHttpRequest();-->
+        <!--request.open("GET",url+'?'+params);-->
+        <!--request.setRequestHeader('content-type', 'application/json'); // 设置 HTTP 头，数据指定为 JSON-->
+        <!--request.onreadystatechange = function(e) {-->
+            <!--if (this.readyState == 4 && this.status == 200) {-->
+                <!--callback(request.responseText);-->
+                <!--//   console.log("request succeed."+request.responseText);-->
+            <!--}-->
+        <!--}-->
+        <!--request.send(null);-->
+    <!--}-->
+
+
+    <!--//初始化地图-->
+    <!--function init() {-->
+
+        <!--// console.log("我是init");-->
+
+        <!--var map = new BMap.Map("allmap",{enableMapClick:false,maxZoom:20});            // 创建Map实例-->
+        <!--var pointA1 = new BMap.Point(121.334574,31.200171);-->
+        <!--//先清除所有内容-->
+        <!--map.clearOverlays();-->
+        <!--map.enableScrollWheelZoom();                 //启用滚轮放大缩小-->
+
+
+        <!--//设置折线箭头参数-->
+        <!--var sy = new BMap.Symbol(BMap_Symbol_SHAPE_BACKWARD_OPEN_ARROW, {-->
+            <!--scale: 0.5,//图标缩放大小-->
+            <!--strokeColor:'#fff',//设置矢量图标的线填充颜色-->
+            <!--strokeWeight: '2',//设置线宽-->
+        <!--});-->
+        <!--var icons = new BMap.IconSequence(sy, '10', '30');-->
+
+        <!--//坐标转换完之后的回调函数-->
+        <!--translateCallback = function (data){-->
+            <!--//设置地图中心-->
+            <!--map.centerAndZoom(data.points[0],19);-->
+            <!--//创建自定义图标-->
+            <!--// var myIcon = new BMap.Icon("C:/VSCode/WorkStation/point3.png", new BMap.Size(16,16));-->
+            <!--var myIcon = new BMap.Icon("__STATIC__/bts/img/mark.png", new BMap.Size(16,16));-->
+            <!--//遍历所有的点-->
+            <!--for(var index in data.points)-->
+            <!--{-->
+                <!--// 创建标注-->
+                <!--var marker2 = new BMap.Marker(data.points[index],{icon:myIcon});-->
+                <!--// 将标注添加到地图中-->
+                <!--map.addOverlay(marker2);-->
+            <!--}-->
+            <!--// 创建polyline对象-->
+            <!--//定义折线-->
+            <!--var polyline = new BMap.Polyline(data.points,-->
+                <!--{-->
+                    <!--enableEditing: false,//是否启用线编辑，默认为false-->
+                    <!--enableClicking: true,//是否响应点击事件，默认为true-->
+                    <!--icons:[icons],-->
+                    <!--strokeWeight:'3',//折线的宽度，以像素为单位-->
+                    <!--strokeOpacity: 0.7,//折线的透明度，取值范围0 - 1-->
+                    <!--strokeColor:"red" //折线颜色-->
+                <!--});-->
+            <!--map.addOverlay(polyline);-->
+        <!--}-->
+
+
+        <!--var PointArr = new Array();-->
+        <!--var point0 = new BMap.Point(121.466600, 31.220800);//创建一个地理点坐标-->
+        <!--var point1 = new BMap.Point(121.470000, 31.221600);//创建一个地理点坐标-->
+        <!--var point2 = new BMap.Point(121.468300, 31.222000);//创建一个地理点坐标-->
+        <!--var point3 = new BMap.Point(121.483300, 31.235000);//创建一个地理点坐标-->
+        <!--var point4 = new BMap.Point(121.482600, 31.237100);//创建一个地理点坐标-->
+        <!--var point5 = new BMap.Point(121.482300, 31.238500);//创建一个地理点坐标-->
+        <!--var point6 = new BMap.Point(121.478100, 31.242300);//创建一个地理点坐标-->
+
+        <!--PointArr.push(point0);-->
+        <!--PointArr.push(point1);-->
+        <!--PointArr.push(point2);-->
+        <!--PointArr.push(point3);-->
+        <!--PointArr.push(point4);-->
+        <!--PointArr.push(point5);-->
+        <!--PointArr.push(point6);-->
+        <!--//转化为百度地图的坐标-->
+        <!--var convertor = new BMap.Convertor();-->
+        <!--convertor.translate(PointArr,1,5,translateCallback);-->
+    <!--}-->
+    <!--window.onload = loadJScript;  //异步加载地图-->
+
+
+<!--</script>-->
+
+
+
+
+
+
+
+
+
+
+
+
+

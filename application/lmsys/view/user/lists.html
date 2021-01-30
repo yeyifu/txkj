@@ -1,0 +1,388 @@
+{extend name="public/base" /}
+{block name="main"}
+<style type="text/css">
+    .popPosition {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+    }
+    #pop-container {
+        display: none;
+        z-index: 999;
+    }
+    /*遮盖层*/
+    #cover-tier {
+        background-color: #D9D9D9;
+        opacity: 0.5;
+    }
+    /*弹出层内容*/
+    #pop-tier {
+        border-radius: 10px;
+        width: 550px;
+        height: 250px;
+        /* border: 1px solid #2AACC3; */
+        background-color: #fff;
+        /*margin: auto;*/
+        text-align: center;
+        top: 100px;
+    }
+    /*关闭弹框*/
+    #close-pop {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+    }
+
+    /*修改管理员 boxhiddenedit*/
+    #pop-containeredit {
+        display: none;
+        z-index: 999;
+    }
+    /*遮盖层*/
+    #cover-tieredit {
+        background-color: #D9D9D9;
+        opacity: 0.5;
+    }
+    /*弹出层内容*/
+    #pop-tieredit {
+        border-radius: 10px;
+        width: 550px;
+        height: 250px;
+        /* border: 1px solid #2AACC3; */
+        background-color: #fff;
+        /*margin: auto;*/
+        text-align: center;
+        top: 100px;
+    }
+    /*关闭弹框*/
+    #close-popedit {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+    }
+</style>
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>用户列表</h2>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <!-- <h5>基本数据表示例与响应插件</h5> -->
+                    <!--<h3><a href="{:url('user/add')}"><i class="fa fa-plus-square"></i> 添加</a></h3>-->
+                    <h3 style="color: #007bff;"><a onclick='add()'><i class="fa fa-plus-square"></i> 添加</a></h3>
+                </div>
+                <div class="ibox-content">
+                    <div class="table-responsive">
+                        <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4"><div class="html5buttons"></div><table class="table table-striped table-bordered table-hover dataTables-example dataTable" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info" role="grid">
+                            <thead>
+                            <tr role="row">
+                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="序号: activate to sort column descending" style="width: 228px;">序号</th>
+                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="企业名称: activate to sort column ascending" style="width: 399px;">名称</th>
+                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="联系邮箱: activate to sort column ascending" style="width: 362px;">账号</th>
+                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="允许登录: activate to sort column ascending" style="width: 100px;">允许登录</th>
+                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="联系人: activate to sort column ascending" style="width: 250px;">创建时间</th>
+                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="证件地址: activate to sort column ascending" style="width: 250px;">最后登录时间</th>
+                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="操作: activate to sort column ascending" style="width: 250px;">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody id="userlist">
+                            {volist name='data' id='value'}
+                            <tr class="gradeA odd" role="row">
+                                <td class="center">{$i}</td>
+                                <input type="hidden" name="id" value="{$value.id}">
+                                <input type="hidden" name="com_id" value="{$value.com_id}">
+                                <td id="usernameid{$value.id}">{$value.username}</td>
+                                <td id="phoneid{$value.id}">{$value.phone}</td>
+                                <td id="loginflagid{$value.id}" value="{$value.login_flag}">{$value.login_flag=='1' ? '否':'是'}</td>
+                                <td class="center">{$value.create_time}</td>
+                                <td class="center">{$value.last_time}</td>
+                                <td class="center" style="width: 200px;">
+                                    <!--<a href="{:url('user/edit')}?id={$value.id}"><button class="btn btn-info " type="button"><i class="fa fa-paste" ></i> 编辑</button></a>-->
+                                    <a><button class="btn btn-info " type="button" onclick="edit(this,{$value.id})"><i class="fa fa-paste" ></i> 编辑</button></a>
+                                    <button class="btn btn-warning " type="button" onclick='del(this,"{$value.id}","{$value.com_id}")'><i class="fa fa-warning"></i> <span class="bold">删除</span></button>
+                                </td>
+                            </tr>
+                            {/volist}
+
+
+
+                            </tbody>
+                            <tfoot>
+
+                            </tfoot>
+                        </table>
+
+                            <!-- <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="DataTables_Table_0_previous"><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item "><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="2" tabindex="0" class="page-link">2</a></li><li class="paginate_button page-item "><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="3" tabindex="0" class="page-link">3</a></li><li class="paginate_button page-item next" id="DataTables_Table_0_next"><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="4" tabindex="0" class="page-link">Next</a></li></ul></div> -->
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!--添加用户div-->
+<div id="hiddenbox">
+    <!--    <button id="btn">点击弹出层</button>-->
+    <div id="pop-container">
+        <div id="cover-tier" class="popPosition"></div>
+        <div id="pop-tier" class="popPosition">
+            <!-- <i id="close-pop">&#10006;</i> -->
+            <i id="close-pop" class="fa fa-times-rectangle" aria-hidden="true" style="float: right; padding: 5px 5px 0 0;"></i>
+            <p style="padding: 5px 0 0 0;"><B>添加管理员</B> </p>
+            <!-- <form action="{:url('user/addadmin')}" method="post"> -->
+            <ul style="list-style-type: none; padding:10px 0px 0 30px;">
+                <li style="float: left; padding:7px 10px 0 0;"><B>姓名</B> </li>
+                <input type="text" class="form-control" style="width: 400px;" name="username" id="username" value="">
+            </ul>
+            <ul style="list-style-type: none; padding:0px 0px 0 30px;">
+                <li style="float: left; padding:7px 10px 0 0;"><B>账号</B> </li>
+                <input type="text" class="form-control" style="width: 400px;" name="phone" id="phone" value="">
+            </ul>
+            <ul style="list-style-type: none; padding:0px 0px 0 30px;">
+                <li style="float: left; padding:7px 10px 0 0;"><B>允许登录</B> </li>
+
+                <input type="radio" name="loginflag" id="loginflagy" value="0" checked="checked" style="padding: 2px 0 0 0;"/> 是 &nbsp&nbsp
+                <input type="radio" name="loginflag" id="loginflagn" value="1"  /> 否
+            </ul>
+            <ul style="list-style-type: none;">
+                <input value="提交" type="submit" onclick="addadmin(this,{$Think.session.com_id})" style="width: 100px; border: 0 ; margin: 2px 0 2px 0; border-radius: 3px; height: 30px;">
+            </ul>
+            <!-- </form> -->
+        </div>
+    </div>
+</div>
+
+<!--修改用户资料div-->
+<div id="hiddenboxedit">
+    <!--    <button id="btn">点击弹出层</button>-->
+    <div id="pop-containeredit">
+        <div id="cover-tieredit" class="popPosition"></div>
+        <div id="pop-tieredit" class="popPosition">
+            <!-- <i id="close-pop">&#10006;</i> -->
+            <i id="close-popedit" class="fa fa-times-rectangle" aria-hidden="true" style="float: right; padding: 5px 5px 0 0;"></i>
+            <p style="padding: 5px 0 0 0;"><B>添加管理员</B> </p>
+            <!-- <form action="{:url('user/addadmin')}" method="post"> -->
+            <ul style="list-style-type: none; padding:10px 0px 0 30px;">
+                <li style="float: left; padding:7px 10px 0 0;"><B>名称</B> </li>
+                <input type="hidden" id="action_name" name="action_name" value="{$Think.session.username}">
+                <input type="hidden" id="com_id" name="com_id" value="{$Think.session.com_id}">
+                <!--<input type="hidden" id="loginflag" name="loginflag" value="{$value.login_flag}">-->
+                <input type="text" class="form-control" style="width: 400px;" name="username" id="username1" value="">
+            </ul>
+            <ul style="list-style-type: none; padding:0px 0px 0 30px;">
+                <li style="float: left; padding:7px 10px 0 0;"><B>账号</B> </li>
+                <input type="text" class="form-control" style="width: 400px;" name="phone" id="phone1" value="">
+            </ul>
+            <ul style="list-style-type: none; padding:0px 0px 0 30px;">
+                <li style="float: left; padding:7px 10px 0 0;"><B>允许登录</B> </li>
+
+                <input type="radio" name="login_flag" id="loginy" value="0" style="padding: 2px 0 0 0;"/> 是 &nbsp&nbsp
+                <input type="radio" name="login_flag" id="loginn" value="1"  /> 否
+            </ul>
+            <ul style="list-style-type: none;">
+                <input value="提交" type="submit" onclick="editadmin(this)" style="width: 100px; border: 0 ; margin: 2px 0 2px 0; border-radius: 3px; height: 30px;">
+            </ul>
+            <!-- </form> -->
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<script>
+
+    function add(){
+        // 获取窗口宽度
+        if (window.innerWidth)
+            winWidth = window.innerWidth;
+        else if ((document.body) && (document.body.clientWidth))
+            winWidth = document.body.clientWidth;
+        // 获取窗口高度
+        if (window.innerHeight)
+            winHeight = window.innerHeight;
+        else if ((document.body) && (document.body.clientHeight))
+            winHeight = document.body.clientHeight;
+        // 通过深入 Document 内部对 body 进行检测，获取窗口大小
+        if (document.documentElement && document.documentElement.clientHeight && document.documentElement.clientWidth)
+        {
+            winHeight = document.documentElement.clientHeight;
+            winWidth = document.documentElement.clientWidth;
+        }
+        var top = (winHeight-220)/4+'px';
+        var left = (winWidth-770)/2+'px';
+
+        document.getElementById('pop-container').style.display = 'block';
+        document.getElementById('hiddenbox').style.display = 'block';
+
+        // $("#pop-tier").css({"top":"500px","left":"300px"});
+        $("#pop-tier").css({"top":top,"left":left});
+        document.getElementById('username').value='';
+        document.getElementById('phone').value='';
+
+    }
+
+    function temp(id) {
+        return document.getElementById(id);
+    }
+
+    temp('close-pop').onclick = function() {
+        temp('pop-container').style.display = 'none';
+    }
+
+    temp('close-popedit').onclick = function() {
+        temp('pop-containeredit').style.display = 'none';
+        $("input[name='login_flag']:checked").attr("checked",false);
+    }
+
+
+    //添加管理员
+    function addadmin(obj,com_id){
+        var username = document.getElementById("username").value;
+        var phone = document.getElementById("phone").value;
+        var login_flag = $("input[name='loginflag']:checked").val();
+        if(username != '' && phone != ''){
+            $.post("{:url('user/addadmin')}",{com_id:com_id,user_type:3,username:username,phone:phone,login_flag:login_flag},function(data){
+                if(data.statu==200){
+                    // alert(data.info);
+                    document.getElementById('hiddenbox').style.display = 'none';
+                    // var tdlen = document.getElementsByTagName('tr').length;
+                    // var item = "<tr class='gradeA odd' role='row'><td class='sorting_1'>"+tdlen+"</td><td>"+username+"</td><td>"+phone+"</td><td><button type='button' onclick='deladmin(this,"+data.user_id+")' class='btn btn-default btn-xs'>删除</button></td></tr>";
+                    // $('#adminlist').append(item);
+                    var tdlen = document.getElementsByTagName('tr').length;
+                    var item = "<tr class='gradeA odd' role='row'><td class='sorting_1'>"+tdlen+"</td><input type='hidden' name='id' value="+data.id+"><td id='usernameid"+data.id+"'>"+data.username+"</td><td id='phoneid"+data.id+"'>"+data.phone+"</td><td id='loginflagid"+data.id+"' value='"+data.login_flag+"'>"+data.login_flag+"</td><td>"+data.create_time+"</td><td>"+data.last_time+"</td><td><a><button class='btn btn-info' type='button' onclick='edit(this,"+data.id+")'><i class='fa fa-paste'></i> 编辑</button></a><button class='btn btn-warning' type='button' onclick='del(this,"+data.id+","+data.com_id+")'><i class='fa fa-warning'></i> <span class='bold'>删除</span></button></td></tr>";
+                    $('#userlist').append(item);
+                }else{
+                    alert(data.info);
+
+                }
+            });
+        }else{
+            alert('姓名和账号不能为空!');
+        }
+    }
+
+    //修改管理员信息
+    function edit(obj,id) {
+        $("#loginn").removeAttr("checked");
+        $("#loginy").removeAttr("checked");
+        // alert(id);
+        // 获取窗口宽度
+        if (window.innerWidth)
+            winWidth = window.innerWidth;
+        else if ((document.body) && (document.body.clientWidth))
+            winWidth = document.body.clientWidth;
+        // 获取窗口高度
+        if (window.innerHeight)
+            winHeight = window.innerHeight;
+        else if ((document.body) && (document.body.clientHeight))
+            winHeight = document.body.clientHeight;
+        // 通过深入 Document 内部对 body 进行检测，获取窗口大小
+        if (document.documentElement && document.documentElement.clientHeight && document.documentElement.clientWidth)
+        {
+            winHeight = document.documentElement.clientHeight;
+            winWidth = document.documentElement.clientWidth;
+        }
+        var top = (winHeight-220)/4+'px';
+        var left = (winWidth-770)/2+'px';
+        document.getElementById('pop-containeredit').style.display = 'block';
+        document.getElementById('hiddenboxedit').style.display = 'block';
+        $("#pop-tieredit").css({"top":top,"left":left});
+        $("#user_id").remove();//清除上次追加的标签
+        var item = "<input type='hidden' id='user_id' name='user_id' value="+id+">";
+        $("#phone1").append(item);
+        document.getElementById('username1').value=$("#"+"usernameid"+id).text();
+        document.getElementById('phone1').value=$("#"+"phoneid"+id).text();
+        var login_flag = $("#"+'loginflagid'+id).text();
+        if(login_flag == '是'){
+            $("#loginy").prop("checked",true);
+        }else{
+            $("#loginn").prop("checked",true);
+        }
+    }
+
+    //修改管理员
+    function editadmin(obj){
+        // $login_flag = $("input[name='login_flag']").val();
+
+        var action_name = $("#action_name").val();
+        var username = document.getElementById("username1").value;
+        var phone = document.getElementById("phone1").value;
+        var user_id = document.getElementById("user_id").value;
+        var login_flag = $("input[name='login_flag']:checked").val();
+        var com_id = $("#com_id").val();
+        if(username != '' && phone != ''){
+            $.post("{:url('user/updates')}",{user_id:user_id,user_type:3,action_name:action_name,com_id:com_id,username:username,phone:phone,login_flag:login_flag},function(data){
+                if(data.status==200){
+                    // alert(data.info);
+                    document.getElementById('hiddenboxedit').style.display = 'none';
+                    //列表显示修改后的内容
+                    $("#"+'usernameid'+data.id).text(data.username);
+                    $("#"+'phoneid'+data.id).text(data.phone);
+                    $("#"+'loginflagid'+data.id).text(data.login_flag);
+                    if(data.login_flag=='0'){
+                        $("#"+'loginflagid'+data.id).text('是');
+                    }else{
+                        $("#"+'loginflagid'+data.id).text('否');
+                    }
+
+                    // $("#loginy").attr("checked","");
+                    // $("#loginn").attr("checked","");
+                    // var tdlen = document.getElementsByTagName('tr').length;
+                    // var item = "<tr class='gradeA odd' role='row'><td class='sorting_1'>"+tdlen+"</td><td>"+username+"</td><td>"+phone+"</td><td><button type='button' onclick='deladmin(this,"+data.user_id+")' class='btn btn-default btn-xs'>删除</button></td></tr>";
+                    // $('#adminlist').append(item);
+                }else{
+                    alert(data.info);
+
+                }
+            });
+        }else{
+            alert('姓名和账号不能为空!');
+        }
+
+    }
+
+
+
+
+    //Ajax删除数据
+    function del(obj,id,com_id){
+        // var v1=$(obj).parent().parent().remove();
+        // console.log(v1);
+        // console.log(v1);
+        // return false;
+        var statu = confirm("确认删除这条数据？");
+        if(!statu){
+            return false;
+        }
+        var username = $("#"+"usernameid"+id).text();
+        var phone = $("#"+"phoneid"+id).text();
+        //发送sql语句
+        $.post("{:url('/user/deladmin')}",{user_id:id,user_type:3,com_id:com_id,username:username,phone:phone},function(data){
+
+            if(data.statu==200){
+                // alert(data.info);
+                $(obj).parent().parent().remove();
+            }else{
+                alert(data.info);
+            }
+        });
+    }
+
+</script>
+{/block}

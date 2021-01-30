@@ -1,0 +1,730 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=0Eym5y3bcOq5iYuFnDIb6TfKqExL2Uvd"></script>
+    <title>map</title>
+    <link href="__STATIC__/bts/css/bootstrap.min.css" rel="stylesheet">
+    <link href="__STATIC__/bts/font-awesome/css/font-awesome.css" rel="stylesheet">
+
+    <!-- Toastr style -->
+    <link href="__STATIC__/bts/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+
+    <!-- Gritter -->
+    <link href="__STATIC__/bts/js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
+
+    <link href="__STATIC__/bts/css/animate.css" rel="stylesheet">
+    <link href="__STATIC__/bts/css/style.css" rel="stylesheet">
+    <script src="__STATIC__/bts/js/jquery-3.1.1.min.js"></script>
+</head>
+<style>
+    body{
+        margin:0 1px 0 1px;
+        color:white;
+    }
+    .box{
+        width:100%;
+        /*height:100%;*/
+        margin:0 auto;
+        overflow:hidden;
+        /*display: flex;*/
+        /*background-color: red;*/
+    }
+    .box .left{
+        /*width:22%;*/
+        /*width:300px;*/
+        /*height:915px;*/
+        /*height:calc(100vh - 100px);*/
+        /*background-color:#343a40;*/
+        float:left;
+        margin:0 18px 0 0px;
+    }
+    .box .header{
+        /*display:none;*/
+        width:100%;
+        height:150px;
+        /*background-color:#6a;*/
+        background-color:#ffffff;
+        /*float:right;*/
+        margin:0px 0px 0px 278px;
+        /*margin:0px 0px 0px 4px;*/
+        padding:15px 0px 0px 10px;
+    }
+    .box .right{
+        /*display:none;*/
+        /*border:1px;*/
+        /*width:100%;*/
+        /*height:791px;*/
+        height:100%;
+        /*height:calc(100vh - 100px);*/
+        /*background-color:#f00;*/
+        /*float:left;*/
+
+        /*margin:0 0 0 250px;*/
+
+    }
+    .input{
+        width: 200px;
+        height:25px;
+        margin:20px 2px 10px 5px;
+    }
+    
+
+
+
+    /*地图标题*/
+.BMap_bubble_title {
+    color:white;
+    font-size:13px;
+    font-weight:bold;
+    /*text-align:left;*/
+    text-align:center;
+    padding-left:5px;
+    padding-top:5px;
+    border-bottom:1px solid gray;
+    /*background-color: #1ab394;*/
+    /*background-color: #408bfe;*/
+    background-color: #1ca9ec;
+}
+/* 消息内容 */
+.BMap_bubble_content {
+    text-align:center;
+    background-color:white;
+    padding-left:5px;
+    padding-top:5px;
+    padding-bottom:10px;
+}
+/* 内容 */
+.BMap_pop div:nth-child(9) {
+    top:35px !important;
+    border-radius:7px;
+}
+/* 左上角删除按键 */
+.BMap_pop img {
+    top:43px !important;
+    left:215px !important;
+}
+.BMap_top {
+    display:none;
+}
+.BMap_bottom {
+    display:none;
+}
+.BMap_center {
+    display:none;
+}
+/* 隐藏边角 */
+.BMap_pop div:nth-child(1) div {
+    display:none;
+}
+.BMap_pop div:nth-child(3) {
+    display:none;
+}
+.BMap_pop div:nth-child(7) {
+    display:none;
+}
+
+.btn btn-primary btn-sm{
+    background-color:#23c6c8;
+}
+
+a{
+    color:black;
+}
+
+a:hover{
+    color:#007bff;
+}
+
+.button{
+    background-color: #2779d0;
+    border:#007bff;
+    border-radius: 4px;
+    color:white;
+    cursor:pointer;
+}
+
+
+
+
+
+</style>
+<!--<style type="text/css">-->
+<!--body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";}-->
+<!--</style>-->
+<body>
+<div class="box" id="box">
+    <!--左栏-->
+    <div class="left" id="left">
+        <ul style="list-style-type: none;text-align:center">
+            <li style="margin:20px 0 0 0">
+                <B>手机信息显示</B>
+            </li>
+        </ul>
+
+        <ul style="list-style-type: none;color:white;margin:5px 0 10px 0;line-height: 25px">
+
+            <li style="width:220px;" >
+                <input  type="text" class="input" style="height:30px;width:160px;margin:1px 0 0 0" placeholder="imei编号" id="imei" value="" oninput="tips(this)">
+                <button type="submit" onclick="getphoneinfo()" style="margin:0 0 0 2px;" class="btn btn-primary btn-sm">提交</button>
+            </li>
+
+            <div class="list" id="search_auto" style="width:160px;padding:0 0 0 2px;color: black;background:rgba(255,255,255,0.93);position: absolute; z-index: 10">
+                <!-- <li><a href="" value='ss' onclick="auto_search(this)">fdfdf</a></li>
+                <li><a href="">fdfdf</a></li>
+                <li><a href="">fdfdf</a></li>
+                <li><a href="">fdfdf</a></li> -->
+              
+            </div>
+            <input type="hidden" name="" id="id" value="{$id}">
+            <li id="time" style="width:220px;"></li>
+            <li id="gms_signal" style="width:220px;">GMS信号强度：{$gms_signal}</li>
+            <li id="wifi_signal" style="width:220px;">WIFI信号强度：{$wifi_signal}</li>
+            <li id="emei1" style="width:220px;">EMEI1：{$emei1}</li>
+            <li id="emei2" style="width:220px;">EMEI2：{$emei2}</li>
+            <li id="system_version" style="width:220px;">系统版本：{$system_version}</li>
+            <li id="hard_type" style="width:220px;">硬件型号：{$hard_type}</li>
+            <!--<li id="rom_version" style="width:220px;overflow:hidden;white-space:nowrap; text-overflow:ellipsis">ROM版本：{$rom_version}</li>-->
+            <li id="rom_version" style="width:220px;overflow:hidden;white-space:nowrap; text-overflow:ellipsis">ROM版本：{$rom_version}</li>
+            <!--<li id="rom_version" style="width:220px;overflow: hidden; text-overflow:ellipsis;white-space: nowrap;">ROM版本：12fdsfdfdsf345dsfdfdfdfdsfsdfdfs6789</li>-->
+            <!--<li id="rom_version" style="width:220px; overflow:hidden;text-overflow:ellipsis ;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical ;">ROM版本：fdsfdgggfdfdsft54hn65n6jhfhngdsfdfdfdfdfdfdfgfdgfdgdfsf</li>-->
+            <li id="em_info" style="width:220px;">授权信息：{$em_info}</li>
+        </ul>
+    </div>
+    <script>
+        //提交按钮样式
+        $(":button").css({'background-color':'#2363d8','border':'#2363d8'});
+
+        //点击下拉框之外，关闭下拉框
+        $("body").click(function (e) {
+            if (!$(e.target).closest(".input,.list").length){
+                $(".list").css('display', 'none');//下拉框
+            }
+        });
+
+        function auto_search(imei){
+            $("#search_auto").children().remove();
+            // alert(imei);
+            $("#imei").val(imei);
+            getphoneinfo();
+            $("#search_auto").css('display','none');
+            
+
+        }
+
+
+
+        //输入imei前几位时提示
+        function tips(){
+            var value = $("#imei").val();
+            if(value.length >= 4){
+                $.post("{:url('index/tips')}",{value:value},function(data){
+                    $("#search_auto").children().remove();
+                    var item="";
+                    if(data[0].code == '200'){
+                        // console.log(data);
+                        
+                        // $.each(data,function (i,result) {
+                        // // console.log(result);
+                        //     item += "<li>"+result['imei']+"</li>"
+                        //
+                        // });
+                        for(var i=1;i<data.length;i++){
+                            item += "<li><a href='#' onclick='auto_search("+data[i]+")'>"+data[i]+"</a></li>"
+                        }
+                        $("#search_auto").append(item);
+                        $("#search_auto").css('display','block');
+
+                        // $("#box").click(){
+                        //     $("#search_auto").css('display','none');
+                        // }
+
+                    }else{
+                        item = null;
+                        $("#search_auto").append(item);
+                        // alert('666');
+                    }
+                });
+            }else{
+                $("#search_auto").children().remove();
+            }
+        }
+    </script>
+
+
+    <!--头部-->
+    <div class="header" >
+        <input type="hidden" name="" value="1" id="flag">
+                    <table border="0px;" style="margin: 0px 0 0 10px;padding:0 0 0 10px; margin:0 0 0 10px;">
+                        <tr>
+                            <td colspan="6" ><img onclick="hiddenleft()" src="__STATIC__/bts/img/flag.png" alt=""></td>
+                            <td colspan="6" style="color: #000;">设置编辑</td>
+                        </tr>
+                        <tr>
+                            <td colspan="6"></td>
+                            <td colspan="6" style="height:30px;">
+                                <!--<button type="button" style="height:25px; border-radius: 4px;cursor:not-allowed">数据上传间隔</button>-->
+                                <!--<input type="button" value="数据上传间隔" style="background-color: #408bfe">-->
+                                <button class="button"  type="button" class="btn btn-primary btn-sm" style="cursor:no-drop;">数据上传间隔</button>
+                                <!--<input type="text" name="interval" id="interval" disabled="" placeholder="" value=""  style="width:60px;height:23px">-->
+                                <input type="text" style="height:29px;width:80px;margin:1px 0 0 0;cursor:no-drop;" placeholder="" id="interval" value="" disabled="disabled" >
+
+                                <!--<button type="button" style="height:25px; border-radius: 4px;background-color:white;">数据上传间隔</button>-->
+                                <!--<input type="text" name="interval" id="interval" placeholder="" value="100s" style="height:22px;width:80px;font-size:5px">-->
+                                <!--<button type="button" style="height:25px; border-radius: 4px;cursor:not-allowed">通信URL</button>-->
+                                <button class="button"  type="button" class="btn btn-primary btn-sm" style="cursor:no-drop;">通信URL</button>
+                                <!--<input type="text" name="url" id="url" placeholder="" value="http://122.51.208.215/info" style="height:22px;width:185px;margin:0 0 0px 0;font-size:6px">-->
+                                <!--<input type="text" name="url" id="url" disabled="" placeholder="" value="" style="width:178px;height:23px">-->
+                                <input type="text" name="url" id="url" style="height:29px;width:220px;margin:1px 0 0 0;cursor:no-drop;" placeholder=""  value="" disabled="disabled" >
+                            </td>
+                        </tr>
+
+                        <tr style="">
+                            <td colspan="6"></td>
+                            <td colspan="6">
+                                <button class="button" id="screen" name="screen" type="button" onclick="updatePhone(this)" >禁用锁屏密码</button>
+                                <button class="button" id="conservation" name="conservation" type="button" onclick="updatePhone(this)" class="btn btn-primary btn-sm">关闭节能</button>
+                                <button class="button" id="white_list" name="white_list" type="button" onclick="updatePhone(this)" class="btn btn-primary btn-sm">禁用白名单</button>
+                                <button class="button" id="list_info" name="list_info" type="button" onclick="updatePhone(this)" class="btn btn-primary btn-sm">白名单列表</button>
+                                <button class="button" id="record" name="record" type="button" onclick="updatePhone(this)" class="btn btn-primary btn-sm">启用通话录音</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="6"></td>
+                            <td colspan="6">
+                                <button class="button" id="restart" name="restart" type="button" onclick="updatePhone(this)" class="btn btn-primary btn-sm">重启设备</button>
+                                <button class="button" id="resume_factory" name="resume_factory" type="button" onclick="updatePhone(this)" class="btn btn-primary btn-sm">恢复出厂</button>
+                                <button class="button" id="diagnostic" name="diagnostic" type="button" onclick="updatePhone(this)" class="btn btn-primary btn-sm">开启诊断模式</button>
+                                <button class="button" id="diagnostic_log" name="diagnostic_log" type="button" onclick="updatePhone(this)" class="btn btn-primary btn-sm">下载诊断日志</button>
+                                <button class="button" id="wechat_back" name="wechat_back" type="button" onclick="updatePhone(this)" class="btn btn-primary btn-sm">开启微信文件备份</button>
+                            </td>
+                        </tr>
+                    </table>
+        </ul>
+    </div>
+
+
+
+
+
+
+    <script>
+        // var mapdata = {$mapdata};
+        $(document).ready(function(){
+            
+
+        });
+
+
+
+        //异步获取手机信息
+        function getphoneinfo(obj){
+            var imei = $("#imei").val();
+            $.post("{:url('index/keyword')}",{imei:imei},function(data){
+                console.log(data);
+                if(data[0].code == '200'){
+                    // console.log(data);
+                    //显示手机信息
+                    $("#id").val(data[0].id);
+                    $("#gms_signal").text('GMS信号强度：'+data[0].gms_signal);
+                    $("#wifi_signal").text('WIFI信号强度：'+data[0].wifi_signal);
+                    $("#emei1").text('EMEI1：'+data[0].emei1);
+                    $("#emei2").text('EMEI2：'+data[0].emei2);
+                    $("#system_version").text('系统版本：'+data[0].system_version);
+                    $("#hard_type").text('硬件型号：'+data[0].hard_type);
+                    $("#rom_version").text('ROM版本：'+data[0].rom_version.substring(0,15)+'...');
+                    // $("#rom_version").text('ROM版本：'+data[0].rom_version);
+                    $("#em_info").text('授权信息：'+data[0].em_info);
+
+                    // $("#emei1").attr('title',data[0].emei1);
+                    // $("#emei2").attr('title',data[0].emei2);
+                    $("#rom_version").attr('title',data[0].rom_version);
+                    // $("#em_info").attr('title',data[0].em_info);
+
+                    //手机指令显示
+                    $("#interval").val(data[0].interval+'s');
+                    // $("#interval").css(');
+                    $("#url").val(data[0].url);
+
+                    $("#screen").val(data[0].screen);
+                    if(data[0].screen == '1'){
+                        $("#screen").css('color','white');
+                    }else{
+                        $("#screen").css('color','grey');
+                    }
+
+                    $("#conservation").val(data[0].conservation);
+                    if(data[0].conservation == '1'){
+                        $("#conservation").css('color','white');
+                    }else{
+                        $("#conservation").css('color','grey');
+                    }
+
+                    $("#white_list").val(data[0].white_list);
+                    if(data[0].white_list == '1'){
+                        $("#white_list").css('color','white');
+                    }else{
+                        $("#white_list").css('color','grey');
+                    }
+
+                    $("#list_info").val(data[0].list_info);
+                    if(data[0].list_info == '1'){
+                        $("#list_info").css('color','white');
+                    }else{
+                        $("#list_info").css('color','grey');
+                    }
+
+                    $("#record").val(data[0].record);
+                    if(data[0].record == '1'){
+                        $("#record").css('color','white');
+                    }else{
+                        $("#record").css('color','grey');
+                    }
+
+                    $("#restart").val(data[0].restart);
+                    if(data[0].restart == '1'){
+                        $("#restart").css('color','white');
+                    }else{
+                        $("#restart").css('color','grey');
+                    }
+
+                    $("#resume_factory").val(data[0].resume_factory);
+                    if(data[0].resume_factory == '1'){
+                        $("#resume_factory").css('color','white');
+                    }else{
+                        $("#resume_factory").css('color','grey');
+                    }
+
+                    $("#diagnostic").val(data[0].diagnostic);
+                    if(data[0].diagnostic == '1'){
+                        $("#diagnostic").css('color','white');
+                    }else{
+                        $("#diagnostic").css('color','grey');
+                    }
+
+                    $("#diagnostic_log").val(data[0].diagnostic_log);
+                    if(data[0].diagnostic_log == '1'){
+                        $("#diagnostic_log").css('color','white');
+                    }else{
+                        $("#diagnostic_log").css('color','grey');
+                    }
+
+                    $("#wechat_back").val(data[0].wechat_back);
+                    if(data[0].wechat_back == '1'){
+                        $("#wechat_back").css('color','white');
+                    }else{
+                        $("#wechat_back").css('color','grey');
+                    }
+
+                    //刷新地图
+                    var marker = [];
+                    for(var i in data){
+                        marker.push(data[i]);
+                    }
+                    var markers = [];
+                    for(var i=0;i<marker.length-1;i++){
+                        markers[i] = marker[i+1];
+                    }
+                    markerArr = markers;
+                    // console.log(markerArr);
+                    //定义中心坐标
+                    currentLat = markerArr[markerArr.length-1]['point'].split(",")[0];
+                    currentLon = markerArr[markerArr.length-1]['point'].split(",")[1];
+                    //加载地图
+                    map_load();
+
+                }else{ //手机信息查找失败
+                    $("#id").val(data.id);
+                    $("#gms_signal").text('GMS信号强度：');
+                    $("#wifi_signal").text('WIFI信号强度：');
+                    $("#emei1").text('EMEI1：');
+                    $("#emei2").text('EMEI2：');
+                    $("#system_version").text('系统版本：');
+                    $("#hard_type").text('硬件型号：');
+                    $("#rom_version").text('ROM版本：');
+                    $("#em_info").text('授权信息：');
+                }
+            });
+        }
+
+    </script>
+
+    <!--地图-->
+    <div class="right" id="allmap" ></div>
+
+</div>
+
+
+
+<!--<div id="search_auto" style="width:220px;background-color: red;position: absolute; z-index: 10">-->
+<!--fdsfdfd-->
+<!--</div>-->
+
+
+</body>
+</html>
+
+<script src="/static/bts/js/jquery-3.1.1.min.js"></script>
+<script>
+
+    //隐藏左栏
+    function hiddenleft(){
+        var flag = $("#flag").val();
+        if(flag == 1){
+            $("#left").css('display','none');
+            $(".header").css('margin','0 0 0 0px');
+            $(".right").css('margin','0 0 0 0');
+            $("#flag").val('0');
+            // alert($("#flag").val());
+        }
+        if(flag == 0){
+            // $("#left").css('display','none');
+            // $(".header").css('margin','0 0 0 4px');
+            $("#left").css('display','block');
+            $(".header").css('margin','0 0 0 278px');
+            $("#flag").val('1');
+            // alert($("#flag").val());
+        }
+
+    }
+    
+    //修改手机指令
+    function updatePhone(obj) {
+        var pid = $("#id").val();
+        var field = $(obj).attr("name");
+        var value = $(obj).val();
+        // alert('id:'+pid);
+        // alert(value);
+        // alert(field);
+        // console.log(field);
+        if($("#screen").val()=='0' || $("#screen").val()=='1'){
+           var variable = $(obj).val();
+           $.post("{:url('index/setphoneinstruct')}",{pid:pid,field:field,value:value},function (data) {
+               //修改成功，弹出提示
+               
+               if(data.code == 200){
+                   if(data.value == 1){
+                       $("#"+data.field).val(data.value);
+                       $("#"+data.field).css('color','white');
+                   }else if(data.value == 0){
+                       $("#"+data.field).val(data.value);
+                       $("#"+data.field).css('color','grey');
+                   }else{
+
+                   }
+
+               }
+           });
+        }
+
+    }
+    
+    //显示时间
+    function getCurDate(){
+        var d = new Date();
+        var years = d.getFullYear();
+        var month = add_zero(d.getMonth()+1);
+        var days = add_zero(d.getDate());
+        var hours = add_zero(d.getHours());
+        var minutes = add_zero(d.getMinutes());
+        var seconds=add_zero(d.getSeconds());
+        var ndate = "时间："+years+"年"+month+"月"+days+"日 "+hours+":"+minutes+":"+seconds;
+        // alert(ndate);
+        // document.getElementById("time").text(ndate);
+        $("#time").text(ndate);
+    }
+
+    function add_zero(temp)
+    {
+        if(temp<10) return "0"+temp;
+        else return temp;
+    }
+
+    setInterval("getCurDate()",100);
+</script>
+
+
+<!--地图-->
+
+
+<script type="text/javascript">
+    var markerArr = '';
+    // var markerArr = [
+    //     {title:1,point:"114.034547,22.615831", name: "深圳市北站", content: "1233244535"},
+    //     {title:2,point:"114.045647,22.616831", name: "深圳市北站", content: "1233244535"},
+    //     {title:3,point:"114.064747,22.617831", name: "深圳市北站", content: "1233244535"},
+    //     {title:5,point:"114.074747,22.627831", name: "深圳市北站5", content: "1233244535"}
+    // ];
+    // console.log(markerArr);
+    var map; //Map实例
+    //后台传过来
+    var currentLat = 113.980281;
+    var currentLon = 22.543049;
+    var my = { title: "世界之窗" };
+
+
+    function map_init() {
+        map = new BMap.Map("allmap");
+        //第1步：设置地图中心点，当前城市
+        var point = new BMap.Point(currentLat, currentLon);
+        //第2步：初始化地图,设置中心点坐标和地图级别。
+        map.centerAndZoom(point, 12);
+        //第3步：启用滚轮放大缩小
+        map.enableScrollWheelZoom(true);
+        //第4步：向地图中添加缩放控件
+        var ctrlNav = new window.BMap.NavigationControl({
+            anchor: BMAP_ANCHOR_TOP_LEFT,
+            type: BMAP_NAVIGATION_CONTROL_LARGE
+        });
+        map.addControl(ctrlNav);
+        //第5步：向地图中添加缩略图控件
+        var ctrlOve = new window.BMap.OverviewMapControl({
+            anchor: BMAP_ANCHOR_BOTTOM_RIGHT,
+            isOpen: 1
+        });
+        map.addControl(ctrlOve);
+
+        //第6步：向地图中添加比例尺控件
+        var ctrlSca = new window.BMap.ScaleControl({
+            anchor: BMAP_ANCHOR_BOTTOM_LEFT
+        });
+        map.addControl(ctrlSca);
+
+
+        //第7步：绘制点
+        for (var i = 0; i < markerArr.length; i++) {
+            var p0 = markerArr[i].point.split(",")[0];
+            var p1 = markerArr[i].point.split(",")[1];
+            var maker = addMarker(new window.BMap.Point(p0, p1), i);
+            addInfoWindow(maker, markerArr[i], markerArr[i].name, markerArr[i].content);
+        }
+        //绘制点
+        var points = new Array();
+        for (var i = 0; i < markerArr.length; i++) {
+            var p0 = markerArr[i].point.split(",")[0];
+            var p1 = markerArr[i].point.split(",")[1];
+            var thePoint1 = new BMap.Point(p0, p1);
+            points.push(thePoint1);
+        }
+        drawPolyline(map, points);
+
+        // 添加信息窗口
+        function addInfoWindow(marker, poi,name, content) {
+            // marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+            var label = new window.BMap.Label(poi.title, { offset: new window.BMap.Size(2, 1) });
+            marker.setLabel(label);
+            var clo = "";
+            // alert(poi.title);
+            if ("我的位置" == poi.title) {
+                clo = "#FF5782";
+            } else {
+                clo = "#E6FED9";
+                // clo = "grey";
+            }
+            label.setStyle({
+                // color: "#aff",
+                color: "#fff",
+                fontSize: "16px",
+                // backgroundColor: "0.05",
+                backgroundColor: "Transparent",
+                border: "0",
+                fontWeight: "bold",
+            });
+            //maps.addOverlay(lab1);
+
+            addClickHandler(name,content, marker);
+
+        }
+    }
+
+
+
+    function addClickHandler(name,content, marker) {
+
+        marker.addEventListener("click", function (e) {
+                openInfo(name,content, e)
+            }
+        );
+
+        // marker.addEventListener("click", function (e) {
+        // marker.addEventListener("mouseover", function (e) {
+        //         openInfo(name,content, e)
+        //     }
+        // );
+
+
+        // marker.addEventListener("mouseout", function (e) {
+        //         // openInfo(name,content, e)
+        //         map.closeInfoWindow();
+        //
+        //     }
+        // );
+
+
+    }
+    function openInfo(name,content, e) {
+        var opts = {
+            // width: 300,     // 信息窗口宽度
+            // height: 50,     // 信息窗口高度
+            boxStyle:{
+                width: "50px",
+                height: "30px"
+            },
+            title: name, // 信息窗口标题
+            enableMessage: true//设置允许信息窗发送短息
+        };
+        var p = e.target;
+        var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+        var infoWindow = new BMap.InfoWindow(content, opts);  // 创建信息窗口对象
+        map.openInfoWindow(infoWindow, point); //开启信息窗口
+    }
+    // 添加标注
+    function addMarker(point, index) {
+        index = 11;
+        var myIcon = new BMap.Icon("http://api.map.baidu.com/img/markers.png",
+            new BMap.Size(23, 25), {
+                offset: new BMap.Size(10, 25),
+                imageOffset: new BMap.Size(0, 0 - index * 25)
+
+            });
+        var marker = new BMap.Marker(point, { icon: myIcon });
+
+        map.addOverlay(marker);
+        return marker;
+    }
+    //异步调用百度js
+    function map_load() {
+        map_init();
+    }
+
+    /**
+     * 画线
+     */
+    function drawPolyline(bMap, points) {
+        if (points == null || points.length <= 1) {
+            return;
+        }
+        bMap.addOverlay(new BMap.Polyline(points, {
+            strokeColor: "#FF050F",
+            strokeWeight: 3,
+            strokeOpacity: 0.6
+        })); // 画线
+
+    }
+
+    // window.onload = getmapinfo;
+    window.onload = map_load;
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+

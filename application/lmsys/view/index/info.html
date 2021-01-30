@@ -1,0 +1,65 @@
+{extend name="public/base" /}
+{block name="main"}
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>企业列表</h2>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <!-- <h5>基本数据表示例与响应插件</h5> -->
+                    <h3><a href="{:url('index/index')}"><i class="fa fa-reply"></i>返回</a></h3>
+
+                </div>
+
+<!--                编辑表单-->
+                <div class="ibox-content">
+                    <form >
+                        <input type="hidden" name="com_id" value="">
+                        <div class="form-group  row"><label class="col-sm-2 col-form-label">企业名称</label>
+                            <div class="col-sm-10"><input type="text" class="form-control" name="com_name" value="{$company.com_name}"></div>
+                        </div>
+                        <div class="form-group  row"><label class="col-sm-2 col-form-label">email</label>
+                            <div class="col-sm-10"><input type="text" class="form-control" name="email" value="{$company.email}"></div>
+                        </div>
+                        <div class="form-group  row"><label class="col-sm-2 col-form-label">联系人</label>
+                            <div class="col-sm-10"><input type="text" class="form-control" name="email" value="{$company.contact}"></div>
+                        </div>
+                        <div class="form-group  row"><label class="col-sm-2 col-form-label">证件地址</label>
+                            <div class="col-sm-10"><input type="text" class="form-control" name="email" value="{$company.cre_address}"></div>
+                        </div>
+
+                        <div class="form-group row"><label class="col-sm-2 col-form-label">禁止登陆<br></label>
+                            <div class="col-sm-10">{$company.no_login==1?'<strong>是</strong>':'<strong>否</strong>'}</div>
+                        </div>
+
+                        <div class="form-group row"><label class="col-sm-2 col-form-label">是否授权<br></label>
+                            <div class="col-sm-10">{$company.no_auth==1?'<strong>是</strong>':'<strong>否</strong>'}</div>
+                        </div>
+
+                        <div class="form-group row"><label class="col-sm-2 col-form-label">禁止使用<br></label>
+                            <div class="col-sm-10">{$company.no_use==1?'<strong>是</strong>':'<strong>否</strong>'}</div>
+                        </div>
+
+                        <div class="form-group  row"><label class="col-sm-2 col-form-label">授权数量</label>
+                            <div class="col-sm-10"><input type="text" class="form-control" name="email" value="{$company.cre_address}"></div>
+                        </div>
+
+
+                    </form>
+                </div>
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+{/block}

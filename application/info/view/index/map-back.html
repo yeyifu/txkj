@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>手机信息显示</title>
+
+    <link href="__STATIC__/bts/css/bootstrap.min.css" rel="stylesheet">
+    <link href="__STATIC__/bts/font-awesome/css/font-awesome.css" rel="stylesheet">
+
+    <!-- Toastr style -->
+    <link href="__STATIC__/bts/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+
+    <!-- Gritter -->
+    <link href="__STATIC__/bts/js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
+
+    <link href="__STATIC__/bts/css/animate.css" rel="stylesheet">
+    <link href="__STATIC__/bts/css/style.css" rel="stylesheet">
+    <script src="__STATIC__/bts/js/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=0Eym5y3bcOq5iYuFnDIb6TfKqExL2Uvd"></script>
+</head>
+<style>
+    #rom_version{
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
+
+    }
+</style>
+<body>
+    <div id="wrapper">
+        <nav class="navbar-default navbar-static-side" role="navigation" >
+            <div class="sidebar-collapse">
+                <ul class="nav metismenu" id="side-menu" >
+                    <li class="nav-header" id="time" style="color:white;">
+                    </li>
+
+                    <li class="active" >
+                        <a href="#"><i class="fa fa-th-large"></i> <span class="nav-label">手机信息显示</span> <span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse in" aria-expanded="true" style="line-height: 25px;color:white;margin:0 0 0 5px;">
+                            <li style="width:220px;;"><input type="text" placeholder="imei编号" id="imei" value=""><button type="submit" onclick="getphoneinfo()" style="margin:0 0 0 2px;" class="btn btn-primary btn-sm">提交</button></li>
+                            <input type="hidden" name="" id="id" value="{$id}">
+                            <li id="gms_signal" style="width:220px;">GMS信号强度：{$gms_signal}</li>
+                            <li id="wifi_signal" style="width:220px;">WIFI信号强度：{$wifi_signal}</li>
+                            <li id="emei1" style="width:220px;">EMEI1：{$emei1}</li>
+                            <li id="emei2" style="width:220px;">EMEI2：{$emei2}</li>
+                            <li id="system_version" style="width:220px;">系统版本：{$system_version}</li>
+                            <li id="hard_type" style="width:220px;">硬件型号：{$hard_type}</li>
+                            <li id="rom_version" style="width:220px; text-overflow:ellipsis">ROM版本：{$rom_version}</li>
+                            <!--<li id="rom_version" style="width:220px; text-overflow:ellipsis">ROM版本：12fdsfdfdsf345dsfdfdfdfdsfsdfdfs6789</li>-->
+                            <!--<li id="rom_version" style="width:220px; overflow:hidden;text-overflow:ellipsis ;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical ;">ROM版本：fdsfdgggfdfdsft54hn65n6jhfhngdsfdfdfdfdfdfdfgfdgfdgdfsf</li>-->
+                            <li id="em_info" style="width:220px;">授权信息：{$em_info}</li>
+                        </ul>
+                    </li>
+
+                </ul>
+
+            </div>
+        </nav>
+
+        <script>
+            //异步获取手机信息
+            function getphoneinfo(obj){
+                var imei = $("#imei").val();
+                $.post("{:url('index/keyword')}",{imei:imei},function(data){
+                    if(data.code == '200'){
+                        $("#id").val(data.id);
+                        $("#gms_signal").text('GMS信号强度：'+data.gms_signal);
+                        $("#wifi_signal").text('WIFI信号强度：'+data.wifi_signal);
+                        $("#emei1").text('EMEI1：'+data.emei1);
+                        $("#emei2").text('EMEI2：'+data.emei2);
+                        $("#system_version").text('系统版本：'+data.system_version);
+                        $("#hard_type").text('硬件型号：'+data.hard_type);
+                        $("#rom_version").text('ROM版本：'+data.rom_version);
+                        $("#em_info").text('授权信息：'+data.em_info);
+                    }
+                });
+            }
+
+        </script>
+
+
+
+        <div id="page-wrapper" class="gray-bg dashbard-1">
+            <div class="row border-bottom" style="margin-bottom: 0px;">
+                <!--<nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0;height:270px;">-->
+                <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0;">
+                    <div class="navbar-header">
+                        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+                        <ul style="list-style-type: none;margin: 5px 0 0 50px;">
+                            <li>设置编辑</li>
+                            <li style="display: inline-block; margin:2px 0 2px 0;">数据上传间隔</li>
+                            <li style="display: inline-block; margin:2px 0 2px 0;"><input type="text" value="60s" disabled></li>
+                            <li style="display: inline-block; margin:2px 0 2px 0;">通信URL</li>
+                            <li style="display: inline-block; margin:2px 0 2px 0;"><input type="text" value="https://romsir.com/info" disabled></li>
+
+                        </ul>
+                        <ul style="list-style-type: none;margin: 5px 0 0 50px;">
+                            <li style="display: inline-block; margin:2px 0 2px 0;"><button type="button" class="btn btn-primary btn-sm">禁用锁屏密码</button></li>
+                            <li style="display: inline-block; margin:2px 0 2px 0;"><button type="button" class="btn btn-primary btn-sm">关闭节能</button></li>
+                            <li style="display: inline-block; margin:2px 0 2px 0;"><button type="button" class="btn btn-primary btn-sm">禁用白名单</button></li>
+                            <li style="display: inline-block; margin:2px 0 2px 0;"><button type="button" class="btn btn-primary btn-sm">白名单列表</button></li>
+                            <li style="display: inline-block; margin:2px 0 2px 0;"><button type="button" class="btn btn-primary btn-sm">启用通话录音</button></li>
+                        </ul>
+                        <ul style="list-style-type: none;margin: 5px 0 4px 50px;">
+                            <li style="display: inline-block; margin:2px 0 2px 0;"><button type="button" class="btn btn-primary btn-sm">重启设备</button></li>
+                            <li style="display: inline-block; margin:2px 0 2px 0;"><button type="button" class="btn btn-primary btn-sm">恢复出厂</button></li>
+                            <li style="display: inline-block; margin:2px 0 2px 0;"><button type="button" class="btn btn-primary btn-sm">开启诊断模式</button></li>
+                            <li style="display: inline-block; margin:2px 0 2px 0;"><button type="button" class="btn btn-primary btn-sm">下载诊断日志</button></li>
+                            <li style="display: inline-block; margin:2px 0 2px 0;"><button type="button" class="btn btn-primary btn-sm">开启微信文件备份</button></li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+
+            <div class="row  border-bottom white-bg dashboard-header" id="allmap" style="height:730px;">
+
+            </div>
+            <div class="wrapper wrapper-content">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="row">
+
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="footer">
+                <div>
+                    <!--<strong>Copyright</strong> inspinia 2.9.2 &copy; 2014-2018-->
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <!-- Mainly scripts -->
+
+    <script src="__STATIC__/bts/js/popper.min.js"></script>
+    <script src="__STATIC__/bts/js/bootstrap.js"></script>
+    <script src="__STATIC__/bts/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="__STATIC__/bts/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Flot -->
+    <script src="__STATIC__/bts/js/plugins/flot/jquery.flot.js"></script>
+    <script src="__STATIC__/bts/js/plugins/flot/jquery.flot.tooltip.min.js"></script>
+    <script src="__STATIC__/bts/js/plugins/flot/jquery.flot.spline.js"></script>
+    <script src="__STATIC__/bts/js/plugins/flot/jquery.flot.resize.js"></script>
+    <script src="__STATIC__/bts/js/plugins/flot/jquery.flot.pie.js"></script>
+
+    <!-- Peity -->
+    <script src="__STATIC__/bts/js/plugins/peity/jquery.peity.min.js"></script>
+    <script src="__STATIC__/bts/js/demo/peity-demo.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="__STATIC__/bts/js/inspinia.js"></script>
+    <script src="__STATIC__/bts/js/plugins/pace/pace.min.js"></script>
+
+    <!-- jQuery UI -->
+    <script src="__STATIC__/bts/js/plugins/jquery-ui/jquery-ui.min.js"></script>
+
+    <!-- GITTER -->
+    <script src="__STATIC__/bts/js/plugins/gritter/jquery.gritter.min.js"></script>
+
+    <!-- Sparkline -->
+    <script src="__STATIC__/bts/js/plugins/sparkline/jquery.sparkline.min.js"></script>
+
+    <!-- Sparkline demo data  -->
+    <script src="__STATIC__/bts/js/demo/sparkline-demo.js"></script>
+
+    <!-- ChartJS-->
+    <script src="__STATIC__/bts/js/plugins/chartJs/Chart.min.js"></script>
+
+    <!-- Toastr -->
+    <script src="__STATIC__/bts/js/plugins/toastr/toastr.min.js"></script>
+
+
+
+</body>
+</html>
+
+
+
+
+<script>
+    $(document).ready(function(){
+        // $id = $("#id").val();
+        //
+        // $.post("{:url('index/getmapinfo')}","{id:$id}",function(data){
+        //
+        // });
+    });
+
+    function getCurDate(){
+        var d = new Date();
+        var years = d.getFullYear();
+        var month = add_zero(d.getMonth()+1);
+        var days = add_zero(d.getDate());
+        var hours = add_zero(d.getHours());
+        var minutes = add_zero(d.getMinutes());
+        var seconds=add_zero(d.getSeconds());
+        var ndate = years+"年"+month+"月"+days+"日 "+hours+":"+minutes+":"+seconds;
+        // alert(ndate);
+        // document.getElementById("time").text(ndate);
+        $("#time").text(ndate);
+    }
+
+    function add_zero(temp)
+    {
+        if(temp<10) return "0"+temp;
+        else return temp;
+    }
+
+    setInterval("getCurDate()",100);
+</script>
+
+
+
+<script type="text/javascript">
+
+    //百度地图API功能
+    function loadJScript() {
+        var script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = "http://api.map.baidu.com/api?v=2.0&ak=0Eym5y3bcOq5iYuFnDIb6TfKqExL2Uvd&callback=init";
+        document.body.appendChild(script);
+        // console.log("我是loadJScript");
+    }
+
+    //HTTP请求
+    function get(url,params,callback){
+        var request=new XMLHttpRequest();
+        request.open("GET",url+'?'+params);
+        request.setRequestHeader('content-type', 'application/json'); // 设置 HTTP 头，数据指定为 JSON
+        request.onreadystatechange = function(e) {
+            if (this.readyState == 4 && this.status == 200) {
+                callback(request.responseText);
+                //   console.log("request succeed."+request.responseText);
+            }
+        }
+        request.send(null);
+    }
+
+
+    //初始化地图
+    function init() {
+
+        // console.log("我是init");
+
+        var map = new BMap.Map("allmap",{enableMapClick:false,maxZoom:20});            // 创建Map实例
+        var pointA1 = new BMap.Point(121.334574,31.200171);
+        //先清除所有内容
+        map.clearOverlays();
+        map.enableScrollWheelZoom();                 //启用滚轮放大缩小
+
+
+        //设置折线箭头参数
+        var sy = new BMap.Symbol(BMap_Symbol_SHAPE_BACKWARD_OPEN_ARROW, {
+            scale: 0.5,//图标缩放大小
+            strokeColor:'#fff',//设置矢量图标的线填充颜色
+            strokeWeight: '2',//设置线宽
+        });
+        var icons = new BMap.IconSequence(sy, '10', '30');
+
+        //坐标转换完之后的回调函数
+        translateCallback = function (data){
+            //设置地图中心
+            map.centerAndZoom(data.points[0],19);
+            //创建自定义图标
+
+            //遍历所有的点
+            for(var index in data.points)
+            {
+                // 创建标注
+                var marker2 = new BMap.Marker(data.points[index]);
+                // 将标注添加到地图中
+                map.addOverlay(marker2);
+            }
+            // 创建polyline对象
+            //定义折线
+            var polyline = new BMap.Polyline(data.points,
+                {
+                    enableEditing: false,//是否启用线编辑，默认为false
+                    enableClicking: true,//是否响应点击事件，默认为true
+                    icons:[icons],
+                    strokeWeight:'3',//折线的宽度，以像素为单位
+                    strokeOpacity: 0.7,//折线的透明度，取值范围0 - 1
+                    strokeColor:"red" //折线颜色
+                });
+            map.addOverlay(polyline);
+        }
+
+
+        var PointArr = new Array();
+        var point0 = new BMap.Point(121.466600, 31.220800);//创建一个地理点坐标
+        var point1 = new BMap.Point(121.470000, 31.221600);//创建一个地理点坐标
+        var point2 = new BMap.Point(121.468300, 31.222000);//创建一个地理点坐标
+        var point3 = new BMap.Point(121.483300, 31.235000);//创建一个地理点坐标
+        var point4 = new BMap.Point(121.482600, 31.237100);//创建一个地理点坐标
+        var point5 = new BMap.Point(121.482300, 31.238500);//创建一个地理点坐标
+        var point6 = new BMap.Point(121.478100, 31.242300);//创建一个地理点坐标
+
+        PointArr.push(point0);
+        PointArr.push(point1);
+        PointArr.push(point2);
+        PointArr.push(point3);
+        PointArr.push(point4);
+        PointArr.push(point5);
+        PointArr.push(point6);
+        //转化为百度地图的坐标
+        var convertor = new BMap.Convertor();
+        convertor.translate(PointArr,1,5,translateCallback);
+    }
+    window.onload = loadJScript;  //异步加载地图
+
+
+
+
+
+
+</script>

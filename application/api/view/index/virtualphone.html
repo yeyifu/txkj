@@ -1,0 +1,72 @@
+<!--<!DOCTYPE html>-->
+<!--<hr lang="en">-->
+<!--<head>-->
+    <!--<meta charset="UTF-8">-->
+    <!--<title>模拟手机提交数据</title>-->
+<!--</head>-->
+
+<!--&lt;!&ndash;提交apk,imei,硬件获取授权&ndash;&gt;-->
+<!--&lt;!&ndash;<form action="checkem" method="post">&ndash;&gt;-->
+    <!--&lt;!&ndash;<table border="">&ndash;&gt;-->
+        <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+            <!--&lt;!&ndash;<td>com_id:</td>&ndash;&gt;-->
+            <!--&lt;!&ndash;<td><input type="text" name="com_id" id="" value="1"></td>&ndash;&gt;-->
+        <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+        <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+            <!--&lt;!&ndash;<td>apk:</td>&ndash;&gt;-->
+            <!--&lt;!&ndash;<td><input type="text" name="apk" id="anx60CLdghvDmjzQBvdX0VRmYCL44aVq" value="anx60CLdghvDmjzQBvdX0VRmYCL44aVq"></td>&ndash;&gt;-->
+        <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+        <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+            <!--&lt;!&ndash;<td>imei:</td>&ndash;&gt;-->
+            <!--&lt;!&ndash;<td><input type="text" name="imei" id="3845778945132" value="3845778945132"></td>&ndash;&gt;-->
+        <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+        <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+            <!--&lt;!&ndash;<td>硬件码:</td>&ndash;&gt;-->
+            <!--&lt;!&ndash;<td><input type="text" name="hard_code" id="fds5fdfd4f" value="fds5fdfd4f"></td>&ndash;&gt;-->
+        <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+    <!--&lt;!&ndash;</table>&ndash;&gt;-->
+    <!--&lt;!&ndash;<input type="submit" value="提交">&ndash;&gt;-->
+<!--&lt;!&ndash;</form>&ndash;&gt;-->
+
+<!--&lt;!&ndash;<hr>&ndash;&gt;-->
+<!--<body>-->
+
+<!--<button onclick='excel()'>导出</button>-->
+<!--<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>-->
+
+
+
+
+
+<!--</body>-->
+<!--<script src="https://code.jquery.com/jquery-3.1.1.min.js">-->
+    <!--//excel导出-->
+    <!--function excel(obj) {-->
+        <!--$.post("/logs/excel",function(data){-->
+            <!--alert('123');-->
+        <!--});-->
+<!--</script>-->
+<!--</html>-->
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+</head>
+<body>
+<button onclick="excel(this)">导出</button>
+<script>
+    function excel(obj) {
+        // alert('123');
+        $.post("{:url('index/excel')}",function(data){
+            window.location.href = 'http://tp.com/api.php/index/excel.html';
+        });
+    }
+</script>
+</body>
+</html>
